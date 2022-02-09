@@ -2,12 +2,19 @@
 import board
 import adafruit_tsl2591
 
-i2c = board.I2C()  # uses board.SCL and board.SDA
-sensor = adafruit_tsl2591.TSL2591(i2c)
 
-lux = sensor.lux
-infrared = sensor.infrared
-visible = sensor.visible
-full_spectrum = sensor.full_spectrum
+def read_tsl2591(sensor="tsl2591", comment=None):
+    """
+    Reads the sensor over I2C
+    TODO Make return into JSON-like map for influxdb"""
+    i2c = board.I2C()  # uses board.SCL and board.SDA
+    sensor = adafruit_tsl2591.TSL2591(i2c)
+    return sensor
 
-print(lux, infrared, visible, full_spectrum)
+
+def main():
+    data = read_tsl2591()
+    print(f"Lux: {data.lux}\nIR: {data.infrared}\nVis: {data.visible}\nFull spectrum: {data.full_spectrum}")
+
+if __name__ == "__main__":
+    main()
