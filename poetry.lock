@@ -1,6 +1,6 @@
 [[package]]
 name = "adafruit-blinka"
-version = "6.20.1"
+version = "6.20.2"
 description = "CircuitPython APIs for non-CircuitPython versions of Python such as CPython on Linux and MicroPython."
 category = "main"
 optional = false
@@ -21,7 +21,7 @@ reference = "piwheels"
 
 [[package]]
 name = "adafruit-circuitpython-busdevice"
-version = "5.1.2"
+version = "5.1.3"
 description = "CircuitPython bus device classes to manage bus sharing."
 category = "main"
 optional = false
@@ -197,6 +197,24 @@ description = "Cross-platform colored terminal text."
 category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+
+[package.source]
+type = "legacy"
+url = "https://www.piwheels.org/simple"
+reference = "piwheels"
+
+[[package]]
+name = "edn-format"
+version = "0.7.5"
+description = "EDN format reader and writer in Python"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+ply = ">=3.10"
+pyRFC3339 = ">=0.2"
+pytz = ">=2016.10"
 
 [package.source]
 type = "legacy"
@@ -435,7 +453,7 @@ reference = "piwheels"
 
 [[package]]
 name = "platformdirs"
-version = "2.4.1"
+version = "2.5.0"
 description = "A small Python module for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
 category = "dev"
 optional = false
@@ -460,6 +478,19 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [package.extras]
 dev = ["pre-commit", "tox"]
+
+[package.source]
+type = "legacy"
+url = "https://www.piwheels.org/simple"
+reference = "piwheels"
+
+[[package]]
+name = "ply"
+version = "3.11"
+description = "Python Lex & Yacc"
+category = "main"
+optional = false
+python-versions = "*"
 
 [package.source]
 type = "legacy"
@@ -573,6 +604,22 @@ python-versions = ">=3.6"
 
 [package.extras]
 diagrams = ["railroad-diagrams", "jinja2"]
+
+[package.source]
+type = "legacy"
+url = "https://www.piwheels.org/simple"
+reference = "piwheels"
+
+[[package]]
+name = "pyrfc3339"
+version = "1.1"
+description = "Generate and parse RFC 3339 timestamps"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+pytz = "*"
 
 [package.source]
 type = "legacy"
@@ -927,14 +974,14 @@ reference = "piwheels"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "d93ff0027d5c4c43d2041ff2cbebe8d1e4a88eeb7f4411a30a4d982c609d4463"
+content-hash = "a71db480a309cc9b2c5aca7181bc623789fd67283b83d6fe5da73b77407b386b"
 
 [metadata.files]
 adafruit-blinka = [
-    {file = "Adafruit_Blinka-6.20.1-py3-none-any.whl", hash = "sha256:283e0abb2c11fbfc7db3e70178acfd3a38f914b98d2f85962cce8622e5dc79c0"},
+    {file = "Adafruit_Blinka-6.20.2-py3-none-any.whl", hash = "sha256:786b86f6075a8baeb7c33d2513280e2784c4322586afbac59466b0bf25f7eab4"},
 ]
 adafruit-circuitpython-busdevice = [
-    {file = "adafruit_circuitpython_busdevice-5.1.2-py3-none-any.whl", hash = "sha256:1a6fb1a291cb19f56e4df54bdbe2c74692a17afacbebf4c15339bccb6bddb140"},
+    {file = "adafruit_circuitpython_busdevice-5.1.3-py3-none-any.whl", hash = "sha256:83275de3e6b794a81a1359ee0a851ef277754a1904a00929ec3c5a2eb4399eb7"},
 ]
 adafruit-circuitpython-dht = [
     {file = "adafruit_circuitpython_dht-3.7.1-py3-none-any.whl", hash = "sha256:40125fece175f016b3c2a52fa24c9b658cb1f70c5d5aae5883d0f0c3a90c9f28"},
@@ -968,6 +1015,9 @@ charset-normalizer = [
 ]
 colorama = [
     {file = "colorama-0.4.4-py2.py3-none-any.whl", hash = "sha256:9f47eda37229f68eee03b24b9748937c7dc3868f906e8ba69fbcbdd3bc5dc3e2"},
+]
+edn-format = [
+    {file = "edn_format-0.7.5-py3-none-any.whl", hash = "sha256:3752c6bd50d39c60f767da9fde7619133a8b3f9217dcdcbd52b9e2e1b7bbb045"},
 ]
 flake8 = [
     {file = "flake8-4.0.1-py2.py3-none-any.whl", hash = "sha256:f1d1114153fb100a4819a94f19b7325be9705e7d3cb90ab921b6d63b343e9612"},
@@ -1024,10 +1074,13 @@ picamera = [
     {file = "picamera-1.13-py3-none-any.whl", hash = "sha256:122e792bb944973cdf2e810a8cbfc405d5c154083943ef75a5cc9f57ee4058f5"},
 ]
 platformdirs = [
-    {file = "platformdirs-2.4.1-py3-none-any.whl", hash = "sha256:a268b8a9ade1492e4cdcec9d101082e42a4108e1bc1cbf7d2a793a01b9f467c7"},
+    {file = "platformdirs-2.5.0-py3-none-any.whl", hash = "sha256:2d6a44127fae9d541dd2f14cd87a9bebbb603c82c6407310e2e4212ca9b226e9"},
 ]
 pluggy = [
     {file = "pluggy-0.13.1-py2.py3-none-any.whl", hash = "sha256:966c145cd83c96502c3c3868f50408687b38434af77734af1e9ca461a4081d2d"},
+]
+ply = [
+    {file = "ply-3.11-py2.py3-none-any.whl", hash = "sha256:096f9b8350b65ebd2fd1346b12452efe5b9607f7482813ffca50c22722a807ce"},
 ]
 py = [
     {file = "py-1.11.0-py2.py3-none-any.whl", hash = "sha256:ec07ead4a92be3fe6be916f57ee869b9b4cb7ec17a0add2a5366cc7efa0521c8"},
@@ -1049,6 +1102,9 @@ pylint = [
 ]
 pyparsing = [
     {file = "pyparsing-3.0.7-py3-none-any.whl", hash = "sha256:9cac03df81a32c5a08393d4aaed42318304684e9abc1336deff3a84feb2e1260"},
+]
+pyrfc3339 = [
+    {file = "pyRFC3339-1.1-py2.py3-none-any.whl", hash = "sha256:67196cb83b470709c580bb4738b83165e67c6cc60e1f2e4f286cfcb402a926f4"},
 ]
 pyserial = [
     {file = "pyserial-3.5-py2.py3-none-any.whl", hash = "sha256:c4451db6ba391ca6ca299fb3ec7bae67a5c55dde170964c7a14ceefec02f2cf0"},

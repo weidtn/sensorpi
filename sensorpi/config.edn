@@ -1,0 +1,5 @@
+;; This is just an example config.edn file, you have to manually change the data.
+{:influxdb: {:hostname "localhost"}
+            :port 8086
+ :sensors {:camera
+           {:rotate true}}}
