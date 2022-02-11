@@ -10,6 +10,7 @@ import dht11
 import tsl2591
 import ds18b20
 
+
 def send_to_db(json, db, influx_host="localhost", influx_port=8086):
     """
     Sends the json data to the influxdb into the database called db. Returns the response of the server.
@@ -23,6 +24,7 @@ def send_to_db(json, db, influx_host="localhost", influx_port=8086):
         res = None
     return res
 
+
 def create_db(db, influx_host="localhost", influx_port=8086):
     try:
         client = InfluxDBClient(host=influx_host, port=influx_port)
@@ -34,6 +36,7 @@ def create_db(db, influx_host="localhost", influx_port=8086):
             print(f"Database {db} already exists!")
     except:
         print("Error while creating database!")
+
 
 def collect_measurements(sensors, measurement):
     """
@@ -48,6 +51,7 @@ def collect_measurements(sensors, measurement):
     """
     pass
 
+
 def main():
     """
     TODO: Ask for data
@@ -55,6 +59,7 @@ def main():
     TODO: Second loop around that one that saves a picture
     """
     print("Not much in here for now...")
+
 
 if __name__ == "__main__":
     main()
