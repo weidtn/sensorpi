@@ -7,6 +7,7 @@ import camera
 import tsl2591
 import logging
 import time
+import sys
 from datetime import datetime
 
 log = logging.getLogger(name=__name__)
@@ -171,6 +172,7 @@ def main(seconds, measurement, verbose=False):
 
 
 if __name__ == "__main__":
+    log = logging.getLogger(name=__name__)
     measurement = input("Name of the measurement: ")
     seconds = int(input("Wait seconds between measurements: "))
     main(seconds, measurement, verbose=True)
