@@ -172,5 +172,5 @@ def main(seconds, measurement, verbose=False):
 
 if __name__ == "__main__":
     measurement = input("Name of the measurement: ")
-    seconds = input("Wait seconds between measurements: ")
+    seconds = int(input("Wait seconds between measurements: "))
     main(seconds, measurement, verbose=True)
