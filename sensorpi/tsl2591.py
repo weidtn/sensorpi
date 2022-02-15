@@ -3,7 +3,7 @@ import board
 import adafruit_tsl2591
 
 
-def read_tsl2591() -> adafruit_tsl2591.TSL2591():
+def read_tsl2591() -> adafruit_tsl2591.TSL2591:
     """Reads the sensor over I2C and returns the sensor class
 
     Reads the sensor over I2C and returns a sensor class from adafruit_tsl2591.
