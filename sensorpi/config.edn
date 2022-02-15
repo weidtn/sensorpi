@@ -1,5 +1,13 @@
 ;; This is just an example config.edn file, you have to manually change the data.
-{:influxdb: {:hostname "localhost"
-             :port 8086}
- :sensors {:camera
-           {:rotate true}}}
+{:influxdb {:url "http://localhost:8086"
+            :db "test1"}
+             
+ :sensors {:cam  ;; name of the sensor
+           {:type "camera" ;; type of the sensor. check supported types
+            :rotate true} ;; some further possible options depending on sensor
+           :ds18b20_1
+           {:type "ds18b20"
+            :pin 26}
+           :bme280
+           {:type "bme280"
+            :protocol "i2c"}}}

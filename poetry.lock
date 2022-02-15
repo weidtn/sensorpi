@@ -1,6 +1,6 @@
 [[package]]
 name = "adafruit-blinka"
-version = "6.20.2"
+version = "6.20.4"
 description = "CircuitPython APIs for non-CircuitPython versions of Python such as CPython on Linux and MicroPython."
 category = "main"
 optional = false
@@ -21,7 +21,7 @@ reference = "piwheels"
 
 [[package]]
 name = "adafruit-circuitpython-busdevice"
-version = "5.1.3"
+version = "5.1.4"
 description = "CircuitPython bus device classes to manage bus sharing."
 category = "main"
 optional = false
@@ -175,15 +175,12 @@ url = "https://www.piwheels.org/simple"
 reference = "piwheels"
 
 [[package]]
-name = "charset-normalizer"
-version = "2.0.11"
-description = "The Real First Universal Charset Detector. Open, modern and actively maintained alternative to Chardet."
+name = "ciso8601"
+version = "2.2.0"
+description = "Fast ISO8601 date time parser for Python written in C"
 category = "main"
 optional = false
-python-versions = ">=3.5.0"
-
-[package.extras]
-unicode_backport = ["unicodedata2"]
+python-versions = "*"
 
 [package.source]
 type = "legacy"
@@ -240,35 +237,26 @@ url = "https://www.piwheels.org/simple"
 reference = "piwheels"
 
 [[package]]
-name = "idna"
-version = "3.3"
-description = "Internationalized Domain Names in Applications (IDNA)"
+name = "influxdb-client"
+version = "1.25.0"
+description = "InfluxDB 2.0 Python client library"
 category = "main"
 optional = false
-python-versions = ">=3.5"
-
-[package.source]
-type = "legacy"
-url = "https://www.piwheels.org/simple"
-reference = "piwheels"
-
-[[package]]
-name = "influxdb"
-version = "5.3.1"
-description = "InfluxDB client"
-category = "main"
-optional = false
-python-versions = "*"
+python-versions = ">=3.6"
 
 [package.dependencies]
-msgpack = "*"
-python-dateutil = ">=2.6.0"
-pytz = "*"
-requests = ">=2.17.0"
-six = ">=1.10.0"
+certifi = ">=14.05.14"
+ciso8601 = {version = ">=2.1.1", optional = true, markers = "extra == \"ciso\""}
+python-dateutil = ">=2.5.3"
+pytz = ">=2019.1"
+rx = ">=3.0.1"
+six = ">=1.10"
+urllib3 = ">=1.15.1"
 
 [package.extras]
-test = ["nose", "nose-cov", "mock", "requests-mock"]
+ciso = ["ciso8601 (>=2.1.1)"]
+extra = ["pandas (>=0.25.3)", "numpy"]
+test = ["coverage (>=4.0.3)", "nose (>=1.3.7)", "pluggy (>=0.3.1)", "py (>=1.4.31)", "randomize (>=0.13)", "pytest (>=5.0.0)", "httpretty (==1.0.5)", "psutil (>=5.6.3)"]
 
 [package.source]
 type = "legacy"
@@ -354,19 +342,6 @@ url = "https://www.piwheels.org/simple"
 reference = "piwheels"
 
 [[package]]
-name = "msgpack"
-version = "1.0.3"
-description = "MessagePack (de)serializer."
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.source]
-type = "legacy"
-url = "https://www.piwheels.org/simple"
-reference = "piwheels"
-
-[[package]]
 name = "numpy"
 version = "1.22.2"
 description = "NumPy is the fundamental package for array computing with Python."
@@ -410,6 +385,32 @@ python-versions = ">=3.6"
 
 [package.dependencies]
 pyparsing = ">=2.0.2,<3.0.5 || >3.0.5"
+
+[package.source]
+type = "legacy"
+url = "https://www.piwheels.org/simple"
+reference = "piwheels"
+
+[[package]]
+name = "pandas"
+version = "1.4.1"
+description = "Powerful data structures for data analysis, time series, and statistics"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+numpy = [
+    {version = ">=1.18.5", markers = "platform_machine != \"aarch64\" and platform_machine != \"arm64\" and python_version < \"3.10\""},
+    {version = ">=1.19.2", markers = "platform_machine == \"aarch64\" and python_version < \"3.10\""},
+    {version = ">=1.20.0", markers = "platform_machine == \"arm64\" and python_version < \"3.10\""},
+    {version = ">=1.21.0", markers = "python_version >= \"3.10\""},
+]
+python-dateutil = ">=2.8.1"
+pytz = ">=2020.1"
+
+[package.extras]
+test = ["hypothesis (>=5.5.3)", "pytest (>=6.0)", "pytest-xdist (>=1.31)"]
 
 [package.source]
 type = "legacy"
@@ -772,29 +773,6 @@ url = "https://www.piwheels.org/simple"
 reference = "piwheels"
 
 [[package]]
-name = "requests"
-version = "2.27.1"
-description = "Python HTTP for Humans."
-category = "main"
-optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
-
-[package.dependencies]
-certifi = ">=2017.4.17"
-charset-normalizer = {version = ">=2.0.0,<2.1.0", markers = "python_version >= \"3\""}
-idna = {version = ">=2.5,<4", markers = "python_version >= \"3\""}
-urllib3 = ">=1.21.1,<1.27"
-
-[package.extras]
-socks = ["PySocks (>=1.5.6,!=1.5.7)", "win-inet-pton"]
-use_chardet_on_py3 = ["chardet (>=3.0.2,<5)"]
-
-[package.source]
-type = "legacy"
-url = "https://www.piwheels.org/simple"
-reference = "piwheels"
-
-[[package]]
 name = "rope"
 version = "0.22.0"
 description = "a python refactoring library..."
@@ -830,6 +808,19 @@ description = "A module to control Raspberry Pi GPIO channels"
 category = "main"
 optional = false
 python-versions = "*"
+
+[package.source]
+type = "legacy"
+url = "https://www.piwheels.org/simple"
+reference = "piwheels"
+
+[[package]]
+name = "rx"
+version = "3.2.0"
+description = "Reactive Extensions (Rx) for Python"
+category = "main"
+optional = false
+python-versions = ">=3.6.0"
 
 [package.source]
 type = "legacy"
@@ -890,7 +881,7 @@ reference = "piwheels"
 
 [[package]]
 name = "typing-extensions"
-version = "4.0.1"
+version = "4.1.1"
 description = "Backported and Experimental Type Hints for Python 3.6+"
 category = "dev"
 optional = false
@@ -974,14 +965,14 @@ reference = "piwheels"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "a71db480a309cc9b2c5aca7181bc623789fd67283b83d6fe5da73b77407b386b"
+content-hash = "e63d66a2543fd05558a5c5b53a74639d7d05c302146e8df613971bdd6de24a30"
 
 [metadata.files]
 adafruit-blinka = [
-    {file = "Adafruit_Blinka-6.20.2-py3-none-any.whl", hash = "sha256:786b86f6075a8baeb7c33d2513280e2784c4322586afbac59466b0bf25f7eab4"},
+    {file = "Adafruit_Blinka-6.20.4-py3-none-any.whl", hash = "sha256:678721892239cc8178f840ce5b6b8edc0ed1262516920c7432d95234aad9203b"},
 ]
 adafruit-circuitpython-busdevice = [
-    {file = "adafruit_circuitpython_busdevice-5.1.3-py3-none-any.whl", hash = "sha256:83275de3e6b794a81a1359ee0a851ef277754a1904a00929ec3c5a2eb4399eb7"},
+    {file = "adafruit_circuitpython_busdevice-5.1.4-py3-none-any.whl", hash = "sha256:24d1072d879adec092a9703230311ed90e549093fcf4d821ae3de7ed43b37c50"},
 ]
 adafruit-circuitpython-dht = [
     {file = "adafruit_circuitpython_dht-3.7.1-py3-none-any.whl", hash = "sha256:40125fece175f016b3c2a52fa24c9b658cb1f70c5d5aae5883d0f0c3a90c9f28"},
@@ -1010,8 +1001,13 @@ autopep8 = [
 certifi = [
     {file = "certifi-2021.10.8-py2.py3-none-any.whl", hash = "sha256:eaf5fd6a051cba81570919009491fc35069c99da0dd8d57304930ee7a5699fb0"},
 ]
-charset-normalizer = [
-    {file = "charset_normalizer-2.0.11-py3-none-any.whl", hash = "sha256:47bdf3ac4246223418c1fbd77d3884bc918ca4f22a76cd3b3b57a4c8f4087e7c"},
+ciso8601 = [
+    {file = "ciso8601-2.2.0-cp35-cp35m-linux_armv6l.whl", hash = "sha256:51b63d4c878437413b0c6908803b81762ed06dc70f7fac84c026c5d79d5bc16f"},
+    {file = "ciso8601-2.2.0-cp35-cp35m-linux_armv7l.whl", hash = "sha256:51b63d4c878437413b0c6908803b81762ed06dc70f7fac84c026c5d79d5bc16f"},
+    {file = "ciso8601-2.2.0-cp37-cp37m-linux_armv6l.whl", hash = "sha256:31685024b41dcb3c705555077bb84ff49ea0e1afd7e2bab268b08307c8bf5764"},
+    {file = "ciso8601-2.2.0-cp37-cp37m-linux_armv7l.whl", hash = "sha256:31685024b41dcb3c705555077bb84ff49ea0e1afd7e2bab268b08307c8bf5764"},
+    {file = "ciso8601-2.2.0-cp39-cp39-linux_armv6l.whl", hash = "sha256:e8de1ffc27de13049f418eb563b0b5d962cbbba9f15cf6eca983c44566e56899"},
+    {file = "ciso8601-2.2.0-cp39-cp39-linux_armv7l.whl", hash = "sha256:e8de1ffc27de13049f418eb563b0b5d962cbbba9f15cf6eca983c44566e56899"},
 ]
 colorama = [
     {file = "colorama-0.4.4-py2.py3-none-any.whl", hash = "sha256:9f47eda37229f68eee03b24b9748937c7dc3868f906e8ba69fbcbdd3bc5dc3e2"},
@@ -1022,11 +1018,8 @@ edn-format = [
 flake8 = [
     {file = "flake8-4.0.1-py2.py3-none-any.whl", hash = "sha256:f1d1114153fb100a4819a94f19b7325be9705e7d3cb90ab921b6d63b343e9612"},
 ]
-idna = [
-    {file = "idna-3.3-py3-none-any.whl", hash = "sha256:a8c56282ad8491e5d10c5d44e9e4ce38e37a16bc03ebb54fdcaf9d05b8e0c309"},
-]
-influxdb = [
-    {file = "influxdb-5.3.1-py2.py3-none-any.whl", hash = "sha256:65040a1f53d1a2a4f88a677e89e3a98189a7d30cf2ab61c318aaa89733280747"},
+influxdb-client = [
+    {file = "influxdb_client-1.25.0-py3-none-any.whl", hash = "sha256:30a41116b3083604204aaaf3a6dad55bdf8ff2bfc945e612d578cc3aa71fb99b"},
 ]
 isort = [
     {file = "isort-5.10.1-py3-none-any.whl", hash = "sha256:eea14d9ea804d971049b4a1f35d1fde5a1988a3d6adc52a01f84f6ed4afca079"},
@@ -1046,14 +1039,6 @@ mccabe = [
 more-itertools = [
     {file = "more_itertools-8.12.0-py3-none-any.whl", hash = "sha256:b43ba69c9ce84ac81c87698802232c8491ec050a8430b8ce57a654ab05f94be4"},
 ]
-msgpack = [
-    {file = "msgpack-1.0.3-cp35-cp35m-linux_armv6l.whl", hash = "sha256:714b1c9322b2ba7d842615c2769f552f0272a6df930db63a9f96f5bf518e7452"},
-    {file = "msgpack-1.0.3-cp35-cp35m-linux_armv7l.whl", hash = "sha256:714b1c9322b2ba7d842615c2769f552f0272a6df930db63a9f96f5bf518e7452"},
-    {file = "msgpack-1.0.3-cp37-cp37m-linux_armv6l.whl", hash = "sha256:4c7ee638573aae7547f127d42ef9585de6d4935db5fc37a4e94dd4682071a22c"},
-    {file = "msgpack-1.0.3-cp37-cp37m-linux_armv7l.whl", hash = "sha256:4c7ee638573aae7547f127d42ef9585de6d4935db5fc37a4e94dd4682071a22c"},
-    {file = "msgpack-1.0.3-cp39-cp39-linux_armv6l.whl", hash = "sha256:e5386d1af5cd5b0e2626860d7bd543dbf9035e854e78cffab0f37640776222b7"},
-    {file = "msgpack-1.0.3-cp39-cp39-linux_armv7l.whl", hash = "sha256:e5386d1af5cd5b0e2626860d7bd543dbf9035e854e78cffab0f37640776222b7"},
-]
 numpy = [
     {file = "numpy-1.22.2-cp39-cp39-linux_armv6l.whl", hash = "sha256:c90ed70414781886980df6c110bdaa7d5d7c9e30a2b5370c1cef7d656fb15511"},
     {file = "numpy-1.22.2-cp39-cp39-linux_armv7l.whl", hash = "sha256:c90ed70414781886980df6c110bdaa7d5d7c9e30a2b5370c1cef7d656fb15511"},
@@ -1066,6 +1051,10 @@ opencv-python-headless = [
 ]
 packaging = [
     {file = "packaging-21.3-py3-none-any.whl", hash = "sha256:36bb3108f8e33f88e52e7985b4068e2585b67e5b7b3a0fa2817f9852bc39d2ef"},
+]
+pandas = [
+    {file = "pandas-1.4.1-cp39-cp39-linux_armv6l.whl", hash = "sha256:6f44f63c91881ba1189e668c348e506f36be605fdb2ee328ce0f44259b4057f3"},
+    {file = "pandas-1.4.1-cp39-cp39-linux_armv7l.whl", hash = "sha256:6f44f63c91881ba1189e668c348e506f36be605fdb2ee328ce0f44259b4057f3"},
 ]
 parso = [
     {file = "parso-0.8.3-py2.py3-none-any.whl", hash = "sha256:9c0ab364bdef44019b358a7263f2cad8f68a7df1ac075b54bcde2eee36e38a50"},
@@ -1127,9 +1116,6 @@ pytz = [
 pyusb = [
     {file = "pyusb-1.2.1-py3-none-any.whl", hash = "sha256:2b4c7cb86dbadf044dfb9d3a4ff69fd217013dbe78a792177a3feb172449ea36"},
 ]
-requests = [
-    {file = "requests-2.27.1-py2.py3-none-any.whl", hash = "sha256:1a44eef7d80448faea8129b00b15cd00bf8e5cfd96de807e86d4a37b01364b25"},
-]
 rope = [
     {file = "rope-0.22.0-py3-none-any.whl", hash = "sha256:752d57e873371813aaec54152eabb0d290ae539b44a8eb3747f33e7dbe31dc2d"},
 ]
@@ -1149,6 +1135,9 @@ rpi-ws281x = [
     {file = "RPi.GPIO-0.7.1-cp39-cp39-linux_armv6l.whl", hash = "sha256:231f6142c25975a7e39b96faf4905f05f97dba6809e8c5f0d58f284b35b4b821"},
     {file = "RPi.GPIO-0.7.1-cp39-cp39-linux_armv7l.whl", hash = "sha256:231f6142c25975a7e39b96faf4905f05f97dba6809e8c5f0d58f284b35b4b821"},
 ]
+rx = [
+    {file = "Rx-3.2.0-py3-none-any.whl", hash = "sha256:922c5f4edb3aa1beaa47bf61d65d5380011ff6adcd527f26377d05cb73ed8ec8"},
+]
 six = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
 ]
@@ -1165,7 +1154,7 @@ toml = [
     {file = "toml-0.10.2-py2.py3-none-any.whl", hash = "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b"},
 ]
 typing-extensions = [
-    {file = "typing_extensions-4.0.1-py3-none-any.whl", hash = "sha256:816d8d4810a8d107c8c0d3896373939499850a476d7ad0158ddbe7062541f947"},
+    {file = "typing_extensions-4.1.1-py3-none-any.whl", hash = "sha256:31b902ea3c3297255b2ce9b5d9335e6555068dd767d3c514f263c43d9411fcab"},
 ]
 ujson = [
     {file = "ujson-5.1.0-cp37-cp37m-linux_armv6l.whl", hash = "sha256:da167a74fc54ec313c4a6bf3dc583db98d228b005e5db003983f9abe947883e4"},

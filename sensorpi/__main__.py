@@ -1,7 +1,15 @@
 #!/usr/bin/env python3
 import glob
 import edn_format
-from influxdb import InfluxDBClient
+from influxdb_client import InfluxDBClient
+import ds18b20
+import camera
+import tsl2591
+import logging
+import time
+from datetime import datetime
+
+log = logging.getLogger(name=__name__)
 
 
 def edn_to_map(x) -> dict:
@@ -64,22 +72,24 @@ def read_config(config_path: str) -> dict:
     return config_dict
 
 
-def send_to_db(json, db, influx_host="localhost", influx_port=8086):
-    """
-    Sends the json data to the influxdb into the database called db.
+def send_to_db(data, db, user=None, password=None,
+               influx_url="http://localhost:8086",
+               org="-", retention_policy="autogen"):
+    """Sends the data to the influxdb into the database called db.
+
     Returns the response of the server.
     Default keywords are defaults from influx
+    Its for a v1.8 influxdb. Might also work for v>=2
     """
-    try:
-        client = InfluxDBClient(database=db, host=influx_host, port=influx_port)
-        res = client.write_points(json)
-    except:
-        print(f"Error: Nothing was written to database!\n{res}")
-        res = None
-    return res
+    with InfluxDBClient(url=influx_url, token=f"{user}:{password}", org=org) as client:
+        with client.write_api() as write_api:
+            write_api.write(bucket=f"{db}/{retention_policy}", record=data)
 
 
 def create_db(db, influx_host="localhost", influx_port=8086):
+    """Creates a new database if not already existing
+
+    """
     try:
         client = InfluxDBClient(host=influx_host, port=influx_port)
         dbs = [db["name"] for db in client.get_list_database()]
@@ -94,29 +104,73 @@ def create_db(db, influx_host="localhost", influx_port=8086):
 
 def collect_measurements(sensors, measurement):
     """
-    TODO
     takes a list of sensors with pins and runs measurements,
     then constructs a json wich is returned
     -----------------------------------------
-    json()
+    TODO: Check if connected
+    """
+    all_data = []
     for sensor in sensors:
-        if sensor.type == "DHT11":
-            dht11.as_json(measurement)
-    """
-    pass
+        if sensors[sensor]["type"] == "ds18b20":
+            data = ds18b20.as_json(measurement, sensor, comment=None)
+            all_data.append(data[0])
+        elif sensors[sensor]["type"] == "camera":
+            rotate = sensors[sensor]["rotate"]
+            data = camera.hist_as_json(measurement, sensor,
+                                       rotate=rotate, comment=None)
+            all_data.append(data[0])
+        elif sensors[sensor]["type"] == "tsl2591":
+            data = tsl2591.as_json(measurement, sensor, comment=None)
+            all_data.append(data[0])
+        else:  # sensor not implemented
+            log.warning(f"Sensor {sensor} is found in your config.edn "
+                            f"but the type {sensors[sensor]['type']} "
+                            "is not implemented (yet). "
+                            "No measurement was taken for this sensor!")
+    log.info(f"{datetime.now().strftime('%H:%M:%S')} Wrote to database.")
+    return all_data
 
 
-def main():
+def loop(seconds, sensors, measurement, config):
+    """The main loop which is taking a measurement at a given interval.
+
+    Args:
+        seconds: The time between measurements
+        sensors: The list of sensors from config
+        measurement: The name of the measurement
+        config: the config file
+
     """
-    TODO: Ask for data
-    TODO: Main loop takes measurement every x seconds
+    try:
+        while True:
+            log.info(f"Program running! Taking measurement every {seconds} seconds."
+                     "Press Ctrl-C to exit.")
+            data = collect_measurements(sensors, measurement)
+            send_to_db(data, config["influxdb"]["db"])
+            time.sleep(seconds)
+    except KeyboardInterrupt:
+        print("Program is exiting...")
+    except KeyError:
+        print("Your config has some error, try to fix it!")
+
+
+def main(seconds, measurement, verbose=False):
+    """Main function which reads the config file and then starts a loop.
     TODO: Second loop around that one that saves a picture
     """
-    print("Not much in here for now...")
-
-
-print(read_config(find_config()))
+    if verbose:
+        log.setLevel(logging.INFO)
+    else:
+        log.setLevel(logging.WARNING)
+    config = read_config(find_config())
+    try:
+        sensors = config["sensors"]
+        loop(seconds, sensors, measurement, config)
+    except KeyError:
+        log.warning("No sensors defined. Add them in the config.edn file!")
 
 
 if __name__ == "__main__":
-    main()
+    measurement = input("Name of the measurement: ")
+    seconds = input("Wait seconds between measurements: ")
+    main(seconds, measurement, verbose=True)
