@@ -1,0 +1,15 @@
+* Introduction
+A program to read different sensor's data connected to for example a raspberry pi and send it to an influxdb.
+
+* Configuration
+All configuration is done in the config.edn file.
+If you add a sensor here, it will automatically be read by the program and added to the measurement.
+InfluxDB data also has to be set up in here it defaults to a local installation on the same raspberry pi without any authentication. To use a remote InfluxDB, change the URL in the config file.
+
+* Supported sensors
+Currently the following sensors are supported:
+
+- Camera (Integrating histogram, save image)
+- DHT11
+- DS18B20
+- TSL2591
