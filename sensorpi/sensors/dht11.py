@@ -46,7 +46,7 @@ def as_json(measurement: str, pin: int, sensor_name: str = "DHT11", comment: str
     json = [{"measurement": measurement,
              "tags": {"sensor": sensor_name,
                       "comment": comment},
-             "fields": {"temperature": sensor.temperature,
+             "fields": {"temperature": float(sensor.temperature),
                         "humidity": sensor.humidity}
              }]
     return json

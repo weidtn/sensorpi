@@ -124,6 +124,9 @@ def collect_measurements(sensors, measurement):
         elif sensors[sensor]["type"] == "tsl2591":
             data = tsl2591.as_json(measurement, sensor, comment=None)
             all_data.append(data[0])
+        elif sensors[sensor]["type"] == "dht11":
+            data = dht11.as_json(measurement, sensors[sensor]["pin"], sensor, comment=None)
+            all_data.append(data[0])
         else:  # sensor not implemented
             log.warning(f"Sensor {sensor} is found in your config.edn "
                             f"but the type {sensors[sensor]['type']} "
