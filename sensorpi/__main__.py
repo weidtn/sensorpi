@@ -2,9 +2,7 @@
 import glob
 import edn_format
 from influxdb_client import InfluxDBClient
-import ds18b20
-import camera
-import tsl2591
+from .sensors import ds18b20, tsl2591, dht11, camera
 import logging
 import time
 import sys
@@ -171,8 +169,12 @@ def main(seconds, measurement, verbose=False):
         log.warning("No sensors defined. Add them in the config.edn file!")
 
 
-if __name__ == "__main__":
+def main_with_prompt():
     log = logging.getLogger(name=__name__)
     measurement = input("Name of the measurement: ")
     seconds = int(input("Wait seconds between measurements: "))
     main(seconds, measurement, verbose=True)
+
+
+if __name__ == "__main__":
+    main_with_prompt()
