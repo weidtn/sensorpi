@@ -13,3 +13,5 @@ Currently the following sensors are supported:
 - DHT11
 - DS18B20
 - TSL2591
+- BMP280 (I2C)
+- BME280 (I2C)
