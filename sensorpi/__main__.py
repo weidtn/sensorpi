@@ -41,14 +41,17 @@ def find_config() -> str:
         - Write function to create empty config file
 
     """
-    config_paths = glob.glob("./config.edn")
+    config_paths = glob.glob("../config.edn")
+    if config_paths == None:
+        config_paths(glob.glob("./config.edn"))
+        log.warn("Find config entered if branch!")
     if len(config_paths) > 1:
-        print("More than one config file found. This should not be possible?")
+        log.error("More than one config file found. This should not be possible?")
     try:
         config_path = config_paths[0]
+        return config_path
     except:
-        print("No config file found. Please create a new config.edn file!")
-    return config_path
+        log.error("No config file found. Please create a new config.edn file!")
 
 
 def read_config(config_path: str) -> dict:
@@ -175,6 +178,7 @@ def main_with_prompt():
     seconds = int(input("Wait seconds between measurements: "))
     main(seconds, measurement, verbose=True)
 
+main(30, "test_from_shell", verbose=True)
 
 if __name__ == "__main__":
     main_with_prompt()
