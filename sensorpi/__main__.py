@@ -42,9 +42,9 @@ def find_config() -> str:
 
     """
     config_paths = glob.glob("../config.edn")
-    if config_paths == None:
-        config_paths(glob.glob("./config.edn"))
-        log.warn("Find config entered if branch!")
+    if not config_paths:
+        log.debug("Find config entered if branch!")
+        config_paths = glob.glob("./config.edn")
     if len(config_paths) > 1:
         log.error("More than one config file found. This should not be possible?")
     try:
@@ -178,7 +178,6 @@ def main_with_prompt():
     seconds = int(input("Wait seconds between measurements: "))
     main(seconds, measurement, verbose=True)
 
-main(30, "test_from_shell", verbose=True)
 
 if __name__ == "__main__":
     main_with_prompt()
