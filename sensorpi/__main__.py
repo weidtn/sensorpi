@@ -5,7 +5,6 @@ from influxdb_client import InfluxDBClient
 from .sensors import ds18b20, tsl2591, dht11, camera, bmp280, bme280
 import logging
 import time
-import sys
 from datetime import datetime
 
 log = logging.getLogger(name=__name__)
@@ -114,31 +113,55 @@ def collect_measurements(sensors, measurement):
     all_data = []
     for sensor in sensors:
         if sensors[sensor]["type"] == "ds18b20":
-            data = ds18b20.as_json(measurement, sensor, comment=None)
-            all_data.append(data[0])
+            try:
+                data = ds18b20.as_json(measurement, sensor, comment=None)
+                all_data.append(data[0])
+            except Exception:
+                log.warning(f"Sensor {sensors[sensor]} did not return a measurement!")
         elif sensors[sensor]["type"] == "camera":
             rotate = sensors[sensor]["rotate"]
-            data = camera.hist_as_json(measurement, sensor,
-                                       rotate=rotate, comment=None)
-            all_data.append(data[0])
+            try:
+                data = camera.hist_as_json(measurement, sensor,
+                                           rotate=rotate, comment=None)
+                all_data.append(data[0])
+            except Exception:
+                log.warning(f"Sensor {sensors[sensor]} did not return a measurement!")
         elif sensors[sensor]["type"] == "tsl2591":
-            data = tsl2591.as_json(measurement, sensor, comment=None)
-            all_data.append(data[0])
+            try:
+                data = tsl2591.as_json(measurement, sensor, comment=None)
+                all_data.append(data[0])
+            except Exception:
+                log.warning(f"Sensor {sensors[sensor]} did not return a measurement!")
         elif sensors[sensor]["type"] == "dht11":
-            data = dht11.as_json(measurement, sensors[sensor]["pin"], sensor, comment=None)
-            all_data.append(data[0])
+            try:
+                data = dht11.as_json(measurement, sensors[sensor]["pin"], sensor, comment=None)
+                all_data.append(data[0])
+            except Exception:
+                log.warning(f"Sensor {sensors[sensor]} did not return a measurement!")
         elif sensors[sensor]["type"] == "bmp280":
             if sensors[sensor]["protocol"] == "i2c":
-                data = bmp280.i2c_as_json(measurement, sensors[sensor]["address"], sensor, comment=None)
-                all_data.append(data[0])
+                try:
+                    data = bmp280.i2c_as_json(measurement, sensors[sensor]["address"], sensor, comment=None)
+                    all_data.append(data[0])
+                except Exception:
+                    log.warning(f"Sensor {sensors[sensor]} did not return a measurement!")
+            if sensors[sensor]["protocol"] == "spi":
+                try:
+                    data = bmp280.spi_as_json(measurement, sensors[sensor]["pin"], sensor, comment=None)
+                    all_data.append(data[0])
+                except Exception:
+                    log.warning(f"Sensor {sensors[sensor]} did not return a measurement!")
             else:
-                log.warning("Protocol for sensor {sensor} not implemented yet!")
+                log.warning(f"Protocol for sensor {sensor} not implemented yet!")
         elif sensors[sensor]["type"] == "bme280":
             if sensors[sensor]["protocol"] == "i2c":
-                data = bme280.i2c_as_json(measurement, sensors[sensor]["address"], sensor, comment=None)
-                all_data.append(data[0])
+                try:
+                    data = bme280.i2c_as_json(measurement, sensors[sensor]["address"], sensor, comment=None)
+                    all_data.append(data[0])
+                except Exception:
+                    log.warning(f"Sensor {sensors[sensor]} did not return a measurement!")
             else:
-                log.warning("Protocol for sensor {sensor} not implemented yet!")
+                log.warning(f"Protocol for sensor {sensor} not implemented yet!")
         else:  # sensor not implemented
             log.warning(f"Sensor {sensor} is found in your config.edn "
                             f"but the type {sensors[sensor]['type']} "
@@ -160,8 +183,9 @@ def loop(seconds, sensors, measurement, config):
     """
     try:
         while True:
-            log.info(f"Program running! Taking measurement every {seconds} seconds."
-                     "Press Ctrl-C to exit.")
+            log.info(f"Program running!"
+                     " Taking measurement every {seconds} seconds."
+                     " Press Ctrl-C to exit.")
             data = collect_measurements(sensors, measurement)
             send_to_db(data, config["influxdb"]["db"])
             time.sleep(seconds)

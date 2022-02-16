@@ -13,5 +13,7 @@ Currently the following sensors are supported:
 - DHT11
 - DS18B20
 - TSL2591
-- BMP280 (I2C)
+- BMP280 (I2C, SPI)
 - BME280 (I2C)
+
+Multiple sensors should work if different addresses (I2C) or pins (SPI) are used.

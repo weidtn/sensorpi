@@ -16,4 +16,8 @@
            :bme280
            {:type "bme280"
             :address 0x76
-            :protocol "i2c"}}}
+            :protocol "i2c"}
+           :bmp280_0
+           {:type "bmp280"
+            :protocol "spi"
+            :pin "18"}}}
