@@ -10,6 +10,9 @@
            :dht11_inside
            {:type "dht11"
             :pin 26}
+           "TSL2591 upside down" ;; the sensor names can also just be strings
+           {:type "tsl2591"}
+
            :bme280
            {:type "bme280"
             :protocol "i2c"}}}
