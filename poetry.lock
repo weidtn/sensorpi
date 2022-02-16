@@ -20,8 +20,42 @@ url = "https://www.piwheels.org/simple"
 reference = "piwheels"
 
 [[package]]
+name = "adafruit-circuitpython-bme280"
+version = "2.6.10"
+description = "CircuitPython library for the Bosch BME280 temperature/humidity/pressure sensor."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+Adafruit-Blinka = "*"
+adafruit-circuitpython-busdevice = "*"
+
+[package.source]
+type = "legacy"
+url = "https://www.piwheels.org/simple"
+reference = "piwheels"
+
+[[package]]
+name = "adafruit-circuitpython-bmp280"
+version = "3.2.11"
+description = "CircuitPython driver for the BMP280."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+Adafruit-Blinka = "*"
+adafruit-circuitpython-busdevice = "*"
+
+[package.source]
+type = "legacy"
+url = "https://www.piwheels.org/simple"
+reference = "piwheels"
+
+[[package]]
 name = "adafruit-circuitpython-busdevice"
-version = "5.1.4"
+version = "5.1.5"
 description = "CircuitPython bus device classes to manage bus sharing."
 category = "main"
 optional = false
@@ -965,14 +999,20 @@ reference = "piwheels"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "e63d66a2543fd05558a5c5b53a74639d7d05c302146e8df613971bdd6de24a30"
+content-hash = "00df8b1d73679479aa05c2218a6005f17506554adb1678d650955403819173a6"
 
 [metadata.files]
 adafruit-blinka = [
     {file = "Adafruit_Blinka-6.20.4-py3-none-any.whl", hash = "sha256:678721892239cc8178f840ce5b6b8edc0ed1262516920c7432d95234aad9203b"},
 ]
+adafruit-circuitpython-bme280 = [
+    {file = "adafruit_circuitpython_bme280-2.6.10-py3-none-any.whl", hash = "sha256:889b037c98078d65d5e133b146d3431f679fbd0b3dc203aaf3992a74eacfa1c4"},
+]
+adafruit-circuitpython-bmp280 = [
+    {file = "adafruit_circuitpython_bmp280-3.2.11-py3-none-any.whl", hash = "sha256:fea608f4f8c1f6453fbac0ee3791d652b1213a159461b03b56aa0fcf8d8290f6"},
+]
 adafruit-circuitpython-busdevice = [
-    {file = "adafruit_circuitpython_busdevice-5.1.4-py3-none-any.whl", hash = "sha256:24d1072d879adec092a9703230311ed90e549093fcf4d821ae3de7ed43b37c50"},
+    {file = "adafruit_circuitpython_busdevice-5.1.5-py3-none-any.whl", hash = "sha256:bda1d427d4c93b686e0ab816460067f9d34c54463d74b7131a081e53194bec25"},
 ]
 adafruit-circuitpython-dht = [
     {file = "adafruit_circuitpython_dht-3.7.1-py3-none-any.whl", hash = "sha256:40125fece175f016b3c2a52fa24c9b658cb1f70c5d5aae5883d0f0c3a90c9f28"},

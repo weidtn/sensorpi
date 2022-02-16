@@ -15,4 +15,5 @@
 
            :bme280
            {:type "bme280"
+            :address 0x76
             :protocol "i2c"}}}

@@ -2,7 +2,7 @@
 import glob
 import edn_format
 from influxdb_client import InfluxDBClient
-from .sensors import ds18b20, tsl2591, dht11, camera
+from .sensors import ds18b20, tsl2591, dht11, camera, bmp280, bme280
 import logging
 import time
 import sys
@@ -127,6 +127,18 @@ def collect_measurements(sensors, measurement):
         elif sensors[sensor]["type"] == "dht11":
             data = dht11.as_json(measurement, sensors[sensor]["pin"], sensor, comment=None)
             all_data.append(data[0])
+        elif sensors[sensor]["type"] == "bmp280":
+            if sensors[sensor]["protocol"] == "i2c":
+                data = bmp280.i2c_as_json(measurement, sensors[sensor]["address"], sensor, comment=None)
+                all_data.append(data[0])
+            else:
+                log.warning("Protocol for sensor {sensor} not implemented yet!")
+        elif sensors[sensor]["type"] == "bme280":
+            if sensors[sensor]["protocol"] == "i2c":
+                data = bme280.i2c_as_json(measurement, sensors[sensor]["address"], sensor, comment=None)
+                all_data.append(data[0])
+            else:
+                log.warning("Protocol for sensor {sensor} not implemented yet!")
         else:  # sensor not implemented
             log.warning(f"Sensor {sensor} is found in your config.edn "
                             f"but the type {sensors[sensor]['type']} "
@@ -155,8 +167,8 @@ def loop(seconds, sensors, measurement, config):
             time.sleep(seconds)
     except KeyboardInterrupt:
         print("Program is exiting...")
-    except KeyError:
-        print("Your config has some error, try to fix it!")
+    # except KeyError:
+        # print("Your config has some error, try to fix it!")
 
 
 def main(seconds, measurement, verbose=False):
