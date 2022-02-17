@@ -49,7 +49,7 @@ def find_config() -> str:
     try:
         config_path = config_paths[0]
         return config_path
-    except:
+    except Exception:
         log.error("No config file found. Please create a new config.edn file!")
 
 
