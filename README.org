@@ -55,10 +55,12 @@ Currently the following sensors are supported. Their implementations can be foun
 
 Multiple sensors should work if different addresses (I2C) or pins (SPI) are used.
 
-** Camera (type ="cam"=)
+** Camera
+(type ="camera"=)
 The camera can be used as a sensor. This currently only includes taking a photo and integrating its histogram. This value then is returned. The image can be rotated (not imporant for histogram):
 
-** BMP/BME 280 (type ="bme280"= & ="bmp280"=)
+** BMP/BME 280
+(type ="bme280"= & ="bmp280"=)
 You have to specify a protocol for accessing the sensor and the address (I2C) or CS-Pin (SPI) in your config file:
 #+begin_src clojure :eval no
 :sensors {:bme280
@@ -71,10 +73,12 @@ You have to specify a protocol for accessing the sensor and the address (I2C) or
             :pin "18"}}
 #+end_src
 
-** TSL2591 (type ="tsl5281"=)
+** TSL2591
+(type ="tsl5281"=)
 The TSL2591 sensor has no further options.
 
-** DHT11 (type ="dht11"=)
+** DHT11
+(type ="dht11"=)
 You have to provide the pin of the sensor like this:
 #+begin_src clojure :eval no
 :sensors {:dht11
@@ -82,7 +86,8 @@ You have to provide the pin of the sensor like this:
             :pin 26}}
 #+end_src
 
-** DS18B20 (type ="ds18b20"=)
+** DS18B20
+(type ="ds18b20"=)
 The DS18B20 sensor has no further options:
 #+begin_src clojure :eval no
 :sensors {:DS18B20
