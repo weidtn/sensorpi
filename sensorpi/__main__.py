@@ -99,7 +99,7 @@ def create_db(db, influx_host="localhost", influx_port=8086):
             print(f"Database {db} created.")
         else:
             print(f"Database {db} already exists!")
-    except:
+    except Exception:
         print("Error while creating database!")
 
 
