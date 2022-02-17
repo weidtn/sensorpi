@@ -57,7 +57,20 @@ Multiple sensors should work if different addresses (I2C) or pins (SPI) are used
 
 ** Camera
 type ="camera"=
-The camera can be used as a sensor. This currently only includes taking a photo and integrating its histogram. This value then is returned. The image can be rotated (not imporant for histogram):
+The camera can be used as a sensor. The camera can save an image to a path and integrate the picture's histogram. This integral value is then saved to the database if the keyword =:hist= is true. The image can be rotated by 180° (not imporant for histogram). Example camera config:
+
+The folder where the image should be saved to needs to exist already.
+#+begin_src clojure :eval no
+:sensors {:cam
+          {:type "camera"
+           :rotate true
+           :hist true                                ;; can also be false if you only need the image
+           :save                                     ;; if the :save keyword does not exist, only a histogram is calculated
+            {:path "/home/pi/measurement1/cam.png"   ;; saves image to the folder
+             :timestamp true}}}                      ;; Adds a timestamp to the image before ".png"
+#+end_src
+
+A nice trick is to save the image to =/usr/share/grafana/public/img/= so you can access it from a grafana text panel and little html/js (or maybe just symlink it): https://gist.github.com/weidtn/d1171a896483899b606ec9663925147f
 
 ** BMP/BME 280
 type ="bme280"= & ="bmp280"=

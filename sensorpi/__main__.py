@@ -119,12 +119,20 @@ def collect_measurements(sensors, measurement):
             except Exception:
                 log.warning(f"Sensor {sensors[sensor]} did not return a measurement!")
         elif sensors[sensor]["type"] == "camera":
-            rotate = sensors[sensor]["rotate"]
             try:
-                data = camera.hist_as_json(measurement, sensor,
-                                           rotate=rotate, comment=None)
-                all_data.append(data[0])
-            except Exception:
+                rotate = sensors[sensor]["rotate"]
+                if "save" in sensors[sensor]:
+                    save_dict = sensors[sensor]["save"]
+                    path = save_dict["path"]
+                    if "timestamp" in save_dict and save_dict["timestamp"] == True:
+                        path = f"{path.split('.png')[0]}_{datetime.now().strftime('%Y_%m_%d_%H_%M_%S')}.png"
+                    camera.save_img(path, camera.capture(rotate))
+                    print(path)
+                if sensors[sensor]["hist"] == True:
+                    data = camera.hist_as_json(measurement, sensor,
+                                               rotate=rotate, comment=None)
+                    all_data.append(data[0])
+            except Exception as e:
                 log.warning(f"Sensor {sensors[sensor]} did not return a measurement!")
         elif sensors[sensor]["type"] == "tsl2591":
             try:
