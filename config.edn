@@ -4,7 +4,7 @@
              
  :sensors {:cam  ;; name of the sensor
            {:type "camera" ;; type of the sensor. check supported types
-            :rotate true} ;; some further possible options depending on sensor
+            :rotate true}
            :ds18b20_1
            {:type "ds18b20"}
            :dht11_inside

@@ -212,7 +212,6 @@ def main(seconds, measurement, verbose=False):
 
 
 def main_with_prompt():
-    log = logging.getLogger(name=__name__)
     measurement = input("Name of the measurement: ")
     seconds = int(input("Wait seconds between measurements: "))
     main(seconds, measurement, verbose=True)
