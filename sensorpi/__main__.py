@@ -182,10 +182,10 @@ def loop(seconds, sensors, measurement, config):
 
     """
     try:
+        log.info(f"Program running!"
+                 f" Taking measurement every {seconds} seconds."
+                 " Press Ctrl-C to exit.")
         while True:
-            log.info(f"Program running!"
-                     " Taking measurement every {seconds} seconds."
-                     " Press Ctrl-C to exit.")
             data = collect_measurements(sensors, measurement)
             send_to_db(data, config["influxdb"]["db"])
             time.sleep(seconds)
