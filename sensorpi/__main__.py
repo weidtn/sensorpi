@@ -134,20 +134,23 @@ def collect_measurements(sensors, measurement):
                 log.warning(f"Sensor {sensors[sensor]} did not return a measurement!")
         elif sensors[sensor]["type"] == "dht11":
             try:
-                data = dht11.as_json(measurement, sensors[sensor]["pin"], sensor, comment=None)
+                data = dht11.as_json(measurement, sensors[sensor]["pin"],
+                                     sensor, comment=None)
                 all_data.append(data[0])
             except Exception:
                 log.warning(f"Sensor {sensors[sensor]} did not return a measurement!")
         elif sensors[sensor]["type"] == "bmp280":
             if sensors[sensor]["protocol"] == "i2c":
                 try:
-                    data = bmp280.i2c_as_json(measurement, sensors[sensor]["address"], sensor, comment=None)
+                    data = bmp280.i2c_as_json(measurement, sensors[sensor]["address"],
+                                              sensor, comment=None)
                     all_data.append(data[0])
                 except Exception:
                     log.warning(f"Sensor {sensors[sensor]} did not return a measurement!")
             if sensors[sensor]["protocol"] == "spi":
                 try:
-                    data = bmp280.spi_as_json(measurement, sensors[sensor]["pin"], sensor, comment=None)
+                    data = bmp280.spi_as_json(measurement, sensors[sensor]["pin"],
+                                              sensor, comment=None)
                     all_data.append(data[0])
                 except Exception:
                     log.warning(f"Sensor {sensors[sensor]} did not return a measurement!")
@@ -156,7 +159,8 @@ def collect_measurements(sensors, measurement):
         elif sensors[sensor]["type"] == "bme280":
             if sensors[sensor]["protocol"] == "i2c":
                 try:
-                    data = bme280.i2c_as_json(measurement, sensors[sensor]["address"], sensor, comment=None)
+                    data = bme280.i2c_as_json(measurement, sensors[sensor]["address"],
+                                              sensor, comment=None)
                     all_data.append(data[0])
                 except Exception:
                     log.warning(f"Sensor {sensors[sensor]} did not return a measurement!")
