@@ -2,9 +2,25 @@
 A program to read different sensor's data connected to for example a raspberry pi and send it to an influxdb.
 
 * Installation
-It might be needed to install the dependencies for =opencv-python-headless=:
+It might be needed to install the dependencies for =opencv-python-headless= first:
+
 #+begin_src shell eval no
 sudo apt install libaom0 libatlas3-base libavcodec58 libavformat58 libavutil56 libbluray2 libcairo2 libchromaprint1 libcodec2-0.8.1 libcroco3 libdatrie1 libdrm2 libfontconfig1 libgdk-pixbuf2.0-0 libgfortran5 libgme0 libgraphite2-3 libgsm1 libharfbuzz0b libjbig0 libmp3lame0 libmpg123-0 libogg0 libopenjp2-7 libopenmpt0 libopus0 libpango-1.0-0 libpangocairo-1.0-0 libpangoft2-1.0-0 libpixman-1-0 librsvg2-2 libshine3 libsnappy1v5 libsoxr0 libspeex1 libssh-gcrypt-4 libswresample3 libswscale5 libthai0 libtheora0 libtiff5 libtwolame0 libva-drm2 libva-x11-2 libva2 libvdpau1 libvorbis0a libvorbisenc2 libvorbisfile3 libvpx5 libwavpack1 libwebp6 libwebpmux3 libx264-155 libx265-165 libxcb-render0 libxcb-shm0 libxfixes3 libxrender1 libxvidcore4 libzvbi0
+#+end_src
+
+Install via pip:
+#+begin_src shell
+pip install sensorpi
+#+end_src
+
+You can download the repo from github by running
+#+begin_src shell :eval no
+git clone https://github.com/weidtn/sensorpi.git
+#+end_src
+
+And then install with poetry:
+#+begin_src shell
+poetry install
 #+end_src
 
 * Configuration
@@ -52,7 +68,7 @@ sensorpi -m measurement1 -i 30 -c ./measurement1/config.edn
 #+end_src
 
 * Supported sensors
-Currently the following sensors are supported. Their implementations can be found in the sensorpi/sensors folder.
+Currently the following sensors are supported. Their implementations can be found in the sensorpi/sensors folder. Feel free to add your own sensors!
 
 - Camera (Integrating histogram)
 - DHT11
@@ -64,7 +80,8 @@ Currently the following sensors are supported. Their implementations can be foun
 Multiple sensors should work if different addresses (I2C) or pins (SPI) are used.
 
 ** Camera
-type ="camera"=
+type "camera"
+
 The camera can be used as a sensor. The camera can save an image to a path and integrate the picture's histogram. This integral value is then saved to the database if the keyword =:hist= is true. The image can be rotated by 180° (not imporant for histogram). Example camera config:
 
 The folder where the image should be saved to needs to exist already.
@@ -81,7 +98,8 @@ The folder where the image should be saved to needs to exist already.
 A nice trick is to save the image to =/usr/share/grafana/public/img/= so you can access it from a grafana text panel and little html/js (or maybe just symlink it): https://gist.github.com/weidtn/d1171a896483899b606ec9663925147f
 
 ** BMP/BME 280
-type ="bme280"= & ="bmp280"=
+type "bme280" & "bmp280"
+
 You have to specify a protocol for accessing the sensor and the address (I2C) or CS-Pin (SPI) in your config file:
 #+begin_src clojure :eval no
 :sensors {:bme280
@@ -95,11 +113,11 @@ You have to specify a protocol for accessing the sensor and the address (I2C) or
 #+end_src
 
 ** TSL2591
-type ="tsl5281"=
+type = "tsl5281" =
 The TSL2591 sensor has no further options.
 
 ** DHT11
-type ="dht11"=
+type "dht11"
 You have to provide the pin of the sensor like this:
 #+begin_src clojure :eval no
 :sensors {:dht11
@@ -108,7 +126,7 @@ You have to provide the pin of the sensor like this:
 #+end_src
 
 ** DS18B20
-type ="ds18b20"=
+type "ds18b20"
 The DS18B20 sensor has no further options:
 #+begin_src clojure :eval no
 :sensors {:DS18B20
