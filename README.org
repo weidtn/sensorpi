@@ -113,11 +113,13 @@ You have to specify a protocol for accessing the sensor and the address (I2C) or
 #+end_src
 
 ** TSL2591
-type = "tsl5281" =
+type "tsl5281"
+
 The TSL2591 sensor has no further options.
 
 ** DHT11
 type "dht11"
+
 You have to provide the pin of the sensor like this:
 #+begin_src clojure :eval no
 :sensors {:dht11
@@ -127,6 +129,7 @@ You have to provide the pin of the sensor like this:
 
 ** DS18B20
 type "ds18b20"
+
 The DS18B20 sensor has no further options:
 #+begin_src clojure :eval no
 :sensors {:DS18B20
