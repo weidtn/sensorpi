@@ -43,6 +43,14 @@ You have to provide the keywords =:influxdb= and =:sensors= with your data. An e
             :protocol "spi"
             :pin "12"}}}
 #+end_src
+* Usage:
+Make sure to have an InfluxDB v1.8 running and all the sensors connected. Then write a config.edn file with the needed data.
+
+This will use the config file in the measurement1 folder and save to db as measurement1 every 30 seconds. Measurement and interval are optional and the program will automatically ask for them in the commandline. If no config is given, it will search for a config.edn file in sensorpi's folder.
+#+begin_src shell :eval no
+sensorpi -m measurement1 -i 30 -c ./measurement1/config.edn
+#+end_src
+
 * Supported sensors
 Currently the following sensors are supported. Their implementations can be found in the sensorpi/sensors folder.
 
