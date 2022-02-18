@@ -6,9 +6,10 @@ from .sensors import ds18b20, tsl2591, dht11, camera, bmp280, bme280
 import logging
 import time
 from datetime import datetime
+import argparse
+import os
 
 log = logging.getLogger(name=__name__)
-
 
 def edn_to_map(x) -> dict:
     """Helper function to turn edn to a python dict.
@@ -127,7 +128,6 @@ def collect_measurements(sensors, measurement):
                     if "timestamp" in save_dict and save_dict["timestamp"] == True:
                         path = f"{path.split('.png')[0]}_{datetime.now().strftime('%Y_%m_%d_%H_%M_%S')}.png"
                     camera.save_img(path, camera.capture(rotate))
-                    print(path)
                 if sensors[sensor]["hist"] == True:
                     data = camera.hist_as_json(measurement, sensor,
                                                rotate=rotate, comment=None)
@@ -196,7 +196,8 @@ def loop(seconds, sensors, measurement, config):
     try:
         log.info(f"Program running!"
                  f" Taking measurement every {seconds} seconds."
-                 " Press Ctrl-C to exit.")
+                 f" Writing to database {config['influxdb']['db']} as measurement {measurement}"
+                 "\n Press Ctrl-C to exit.")
         while True:
             data = collect_measurements(sensors, measurement)
             send_to_db(data, config["influxdb"]["db"])
@@ -207,15 +208,14 @@ def loop(seconds, sensors, measurement, config):
         # print("Your config has some error, try to fix it!")
 
 
-def main(seconds, measurement, verbose=False):
+def main(seconds, measurement, config, verbose):
     """Main function which reads the config file and then starts a loop.
     TODO: Second loop around that one that saves a picture
     """
-    if verbose:
+    if verbose < 2:
         log.setLevel(logging.INFO)
     else:
         log.setLevel(logging.WARNING)
-    config = read_config(find_config())
     try:
         sensors = config["sensors"]
         loop(seconds, sensors, measurement, config)
@@ -224,9 +224,22 @@ def main(seconds, measurement, verbose=False):
 
 
 def main_with_prompt():
-    measurement = input("Name of the measurement: ")
-    seconds = int(input("Wait seconds between measurements: "))
-    main(seconds, measurement, verbose=True)
+    parser = argparse.ArgumentParser(description="Run measurements from different sensors and send data to an influx db.")
+    parser.add_argument("--config", "-c", type=argparse.FileType("r"), help="config.edn file to use.")
+    parser.add_argument("--measurement", "-m", type=str, help="Measurement name.")
+    parser.add_argument("--interval", "-i", type=int, help="Interval between measurements in seconds.")
+    parser.add_argument("--verbose", "-v", action="count", default=0)
+    args = parser.parse_args()
+    if args.measurement == None:
+        args.measurement = input("Name of the measurement: ")
+    if args.interval == None:
+        args.interval = int(input("Wait seconds between measurements: "))
+    if args.config == None:
+        config = read_config(find_config())
+    else:
+        args.config.close()  # We actually dont need the stream, just the name.
+        config = read_config(args.config.name)
+    main(args.interval, args.measurement, config, args.verbose)
 
 
 if __name__ == "__main__":
