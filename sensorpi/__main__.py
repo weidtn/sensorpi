@@ -9,7 +9,12 @@ from datetime import datetime
 import argparse
 import os
 
-log = logging.getLogger(name=__name__)
+
+log = logging.getLogger(__name__)
+log.setLevel(logging.INFO)
+handler = logging.StreamHandler()
+log.addHandler(handler)
+
 
 def edn_to_map(x) -> dict:
     """Helper function to turn edn to a python dict.
@@ -197,7 +202,7 @@ def loop(seconds, sensors, measurement, config):
         log.info(f"Program running!"
                  f" Taking measurement every {seconds} seconds."
                  f" Writing to database {config['influxdb']['db']} as measurement {measurement}"
-                 "\n Press Ctrl-C to exit.")
+                 "\nPress Ctrl-C to exit.")
         while True:
             data = collect_measurements(sensors, measurement)
             send_to_db(data, config["influxdb"]["db"])
@@ -212,10 +217,8 @@ def main(seconds, measurement, config, verbose):
     """Main function which reads the config file and then starts a loop.
     TODO: Second loop around that one that saves a picture
     """
-    if verbose < 2:
-        log.setLevel(logging.INFO)
-    else:
-        log.setLevel(logging.WARNING)
+    # if verbose > 2:
+        # log.setLevel(logging.WARNING)
     try:
         sensors = config["sensors"]
         loop(seconds, sensors, measurement, config)
