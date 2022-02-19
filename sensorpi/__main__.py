@@ -217,8 +217,6 @@ def main(seconds, measurement, config, verbose):
     """Main function which reads the config file and then starts a loop.
     TODO: Second loop around that one that saves a picture
     """
-    # if verbose > 2:
-        # log.setLevel(logging.WARNING)
     try:
         sensors = config["sensors"]
         loop(seconds, sensors, measurement, config)
