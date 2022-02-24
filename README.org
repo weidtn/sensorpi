@@ -1,5 +1,16 @@
 * Introduction
-A program to read different sensor's data connected to for example a raspberry pi and send it to an influxdb. InfluxDB has to be already installed with a database. Install this on your own. (One way to easily install both grafana and influx is using the =install.sh= script found at https://github.com/Siytek/grafana-influx).
+A program to read different sensor's data connected to for example a raspberry pi and send it to an influxdb. InfluxDB has to be already installed with a database. Install this on your own.
+
+** InfluxDB
+Sensorpi uses influxdb at version 1.8. Version 2.0 needs 64bit support, which is Raspberry Pi OS is not available in. (One way to easily install both grafana and influx is using the =install.sh= script found at https://github.com/Siytek/grafana-influx).
+
+To use less CPU on your Raspberry the following is recommended:
+
+Change settings in =/etc/influxdb/influxdb.conf=
+#+begin_src
+index-version = "tsi1"
+store-enabled = false
+#+end_src
 
 * Installation
 It might be needed to install the dependencies for =opencv-python-headless= first:
