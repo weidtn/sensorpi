@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sensorpi"
-version = "0.1.2"
+version = "0.1.3"
 description = "A Raspberry Pi tool to send multiple sensor data to an influxdb Database"
 authors = ["Nikolai Weidt <weidtn@gmail.com>"]
 maintainers = ["Nikolai Weidt <weidtn@gmail.com>"]

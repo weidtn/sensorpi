@@ -184,7 +184,6 @@ def collect_measurements(sensors, measurement):
                             f"but the type {sensors[sensor]['type']} "
                             "is not implemented (yet). "
                             "No measurement was taken for this sensor!")
-    log.info(f"{datetime.now().strftime('%H:%M:%S')} Wrote to database.")
     return all_data
 
 
@@ -205,7 +204,11 @@ def loop(seconds, sensors, measurement, config):
                  "\nPress Ctrl-C to exit.")
         while True:
             data = collect_measurements(sensors, measurement)
-            send_to_db(data, config["influxdb"]["db"])
+            try:
+                send_to_db(data, config["influxdb"]["db"])
+                log.info(f"{datetime.now().strftime('%H:%M:%S')} Wrote to database.")
+            except Exception:
+                log.warning("Could not send data to database! Is it online?")
             time.sleep(seconds)
     except KeyboardInterrupt:
         print("Program is exiting...")
