@@ -165,7 +165,8 @@ def collect_measurements(sensors, measurement):
                     data = bmp280.spi_as_json(measurement, sensors[sensor]["pin"],
                                               sensor, comment=None)
                     all_data.append(data[0])
-                except Exception:
+                except Exception as e:
+                    log.warning(e)
                     log.warning(f"Sensor {sensors[sensor]} did not return a measurement!")
             else:
                 log.warning(f"Protocol for sensor {sensor} not implemented yet!")

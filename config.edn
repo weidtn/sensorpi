@@ -1,6 +1,6 @@
 ;; This is just an example config.edn file, you have to manually change the data.
 {:influxdb {:url "http://localhost:8086"
-            :db "test1"}
+            :db "test"}
              
  :sensors {:cam  ;; name of the sensor
            {:type "camera" ;; type of the sensor. check supported types
