@@ -109,7 +109,7 @@ def create_db(db, influx_host="localhost", influx_port=8086):
         print("Error while creating database!")
 
 
-def collect_measurements(sensors, measurement):
+def collect_measurements(sensors, measurement, timestamp):
     """
     takes a list of sensors with pins and runs measurements,
     then constructs a json wich is returned
@@ -185,7 +185,8 @@ def collect_measurements(sensors, measurement):
                             f"but the type {sensors[sensor]['type']} "
                             "is not implemented (yet). "
                             "No measurement was taken for this sensor!")
-    return all_data
+    all_data_timestamp = [data | {"timestamp": timestamp} for data in all_data] # the pipe symbol is the merge operator (python 3.9+)
+    return all_data_timestamp
 
 
 def loop(seconds, sensors, measurement, config):
@@ -204,13 +205,14 @@ def loop(seconds, sensors, measurement, config):
                  f" Writing to database {config['influxdb']['db']} as measurement {measurement}"
                  "\nPress Ctrl-C to exit.")
         while True:
-            data = collect_measurements(sensors, measurement)
+            timestamp = time.time()
+            data = collect_measurements(sensors, measurement, timestamp)
             try:
                 send_to_db(data, config["influxdb"]["db"])
                 log.info(f"{datetime.now().strftime('%H:%M:%S')} Wrote to database.")
             except Exception:
                 log.warning("Could not send data to database! Is it online?")
-            time.sleep(seconds)
+            time.sleep(seconds - (time.time() - timestamp)) # wait 'seconds' without time used to measure
     except KeyboardInterrupt:
         print("Program is exiting...")
     # except KeyError:
