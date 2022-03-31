@@ -24,7 +24,7 @@ def read_tsl2591() -> adafruit_tsl2591.TSL2591:
 
 
 def as_json(measurement: str, sensor_name: str = "TSL2591",
-            comment: str = None):
+            comment: str = None, **kwargs):
     """Reads the sensor and returns the data in the json format for influxdb
 
     Args:

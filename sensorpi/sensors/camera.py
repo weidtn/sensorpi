@@ -7,7 +7,7 @@ import numpy as np
 from typing import Union
 
 
-def capture(rotate: bool = True) -> np.ndarray:
+def capture(rotate: bool = True, **kwargs) -> np.ndarray:
     """Captures image from the camera and returns in as opencv/numpy array.
 
     Capures an image from the camera as opencv/numpy array.
@@ -36,7 +36,7 @@ def capture(rotate: bool = True) -> np.ndarray:
     return image
 
 
-def save_img(path: str, image: np.ndarray):
+def save_img(image: np.ndarray, path: str, **kwargs):
     """Saves the image to the path on the filesystem.
 
     Args:
@@ -66,7 +66,8 @@ def calc_histogram(img: np.ndarray) -> np.ndarray:
 
 
 def hist_as_json(measurement: str, sensor_name: str = "Camera",
-                 rotate: bool = True, comment: str = None):
+                 rotate: bool = True, comment: str = None,
+                 **kwargs):
     """Returns the integrated histogram value in json format for influxdb
 
     Args:

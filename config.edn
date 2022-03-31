@@ -23,8 +23,8 @@
            :bmp280_0
            {:type "bmp280"
             :protocol "spi"
-            :pin "18"}
+            :pin 18}
            :bmp280_1
            {:type "bmp280"
             :protocol "spi"
-            :pin "12"}}}
+            :pin 12}}}

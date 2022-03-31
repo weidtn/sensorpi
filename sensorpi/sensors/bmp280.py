@@ -16,7 +16,7 @@ def read_bmp280_i2c(address=0x76):
 
     """
     i2c = board.I2C()
-    bmp280 = adafruit_bmp280.Adafruit_BMP280_I2C(i2c, address=address)
+    sensor = adafruit_bmp280.Adafruit_BMP280_I2C(i2c, address=address)
     return bmp280
 
 
@@ -31,22 +31,25 @@ def read_bmp280_spi(pin: int):
 
     """
     # get digital pin from board with integer
+    bmp280 = {}
     board_pin = board.__getattribute__(f"D{pin}")
-    cs = digitalio.DigitalInOut(board_pin)
-    spi = board.SPI()
-    bmp280 = adafruit_bmp280.Adafruit_BMP280_SPI(spi, cs)
+    with board.SPI() as spi, digitalio.DigitalInOut(board_pin) as cs:
+        sensor = adafruit_bmp280.Adafruit_BMP280_SPI(spi, cs)
+        bmp280["temperature"] = float(sensor.temperature)
+        bmp280["pressure"] = float(sensor.pressure)
+    board_pin = None
     return bmp280
 
 
 def i2c_as_json(measurement: str, address=0x76, sensor_name: str = "BMP280",
-                comment: str = None):
+                comment: str = None, **kwargs):
     try:
         sensor = read_bmp280_i2c(address)
         json = [{"measurement": measurement,
                  "tags": {"sensor": sensor_name,
                           "comment": comment},
-                 "fields": {"temperature": sensor.temperature,
-                            "pressure": sensor.pressure}
+                 "fields": {"temperature": sensor["temperature"],
+                            "pressure": sensor["pressure"]}
                  }]
         return json
     except Exception:
@@ -54,15 +57,17 @@ def i2c_as_json(measurement: str, address=0x76, sensor_name: str = "BMP280",
 
 
 def spi_as_json(measurement: str, pin, sensor_name: str = "BMP280",
-                comment: str = None):
+                comment: str = None, **kwargs):
     try:
         sensor = read_bmp280_spi(pin)
         json = [{"measurement": measurement,
                  "tags": {"sensor": sensor_name,
                           "comment": comment},
-                 "fields": {"temperature": sensor.temperature,
-                            "pressure": sensor.pressure}
+                 "fields": {"temperature": sensor["temperature"],
+                            "pressure": sensor["pressure"]}
                  }]
         return json
-    except Exception:
+    except Exception as e:
+        print(e)
         print(f"Error reading sensor {sensor_name}. Is it connected?")
+

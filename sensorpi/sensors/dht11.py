@@ -28,7 +28,7 @@ def read_dht11(pin: int):
     return sensor
 
 
-def as_json(measurement: str, pin: int, sensor_name: str = "DHT11", comment: str = None):
+def as_json(measurement: str, pin: int, sensor_name: str = "DHT11", comment: str = None, **kwargs):
     """Reads the DHT11 sensor and returns in the json format for influxdb.
 
     Args:

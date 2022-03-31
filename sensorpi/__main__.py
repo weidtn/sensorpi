@@ -2,18 +2,17 @@
 import glob
 import edn_format
 from influxdb_client import InfluxDBClient
-from .sensors import ds18b20, tsl2591, dht11, camera, bmp280, bme280
+from .sensors import handler
 import logging
 import time
 from datetime import datetime
 import argparse
-import os
 
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
-handler = logging.StreamHandler()
-log.addHandler(handler)
+hdlr = logging.StreamHandler()
+log.addHandler(hdlr)
 
 
 def edn_to_map(x) -> dict:
@@ -109,86 +108,6 @@ def create_db(db, influx_host="localhost", influx_port=8086):
         print("Error while creating database!")
 
 
-def collect_measurements(sensors, measurement, timestamp):
-    """
-    takes a list of sensors with pins and runs measurements,
-    then constructs a json wich is returned
-    -----------------------------------------
-    TODO: Check if connected
-    """
-    all_data = []
-    for sensor in sensors:
-        if sensors[sensor]["type"] == "ds18b20":
-            try:
-                data = ds18b20.as_json(measurement, sensor, comment=None)
-                all_data.append(data[0])
-            except Exception:
-                log.warning(f"Sensor {sensors[sensor]} did not return a measurement!")
-        elif sensors[sensor]["type"] == "camera":
-            try:
-                rotate = sensors[sensor]["rotate"]
-                if "save" in sensors[sensor]:
-                    save_dict = sensors[sensor]["save"]
-                    path = save_dict["path"]
-                    if "timestamp" in save_dict and save_dict["timestamp"] == True:
-                        path = f"{path.split('.png')[0]}_{datetime.now().strftime('%Y_%m_%d_%H_%M_%S')}.png"
-                    camera.save_img(path, camera.capture(rotate))
-                if sensors[sensor]["hist"] == True:
-                    data = camera.hist_as_json(measurement, sensor,
-                                               rotate=rotate, comment=None)
-                    all_data.append(data[0])
-            except Exception as e:
-                log.warning(f"Sensor {sensors[sensor]} did not return a measurement!")
-        elif sensors[sensor]["type"] == "tsl2591":
-            try:
-                data = tsl2591.as_json(measurement, sensor, comment=None)
-                all_data.append(data[0])
-            except Exception:
-                log.warning(f"Sensor {sensors[sensor]} did not return a measurement!")
-        elif sensors[sensor]["type"] == "dht11":
-            try:
-                data = dht11.as_json(measurement, sensors[sensor]["pin"],
-                                     sensor, comment=None)
-                all_data.append(data[0])
-            except Exception:
-                log.warning(f"Sensor {sensors[sensor]} did not return a measurement!")
-        elif sensors[sensor]["type"] == "bmp280":
-            if sensors[sensor]["protocol"] == "i2c":
-                try:
-                    data = bmp280.i2c_as_json(measurement, sensors[sensor]["address"],
-                                              sensor, comment=None)
-                    all_data.append(data[0])
-                except Exception:
-                    log.warning(f"Sensor {sensors[sensor]} did not return a measurement!")
-            if sensors[sensor]["protocol"] == "spi":
-                try:
-                    data = bmp280.spi_as_json(measurement, sensors[sensor]["pin"],
-                                              sensor, comment=None)
-                    all_data.append(data[0])
-                except Exception as e:
-                    log.warning(e)
-                    log.warning(f"Sensor {sensors[sensor]} did not return a measurement!")
-            else:
-                log.warning(f"Protocol for sensor {sensor} not implemented yet!")
-        elif sensors[sensor]["type"] == "bme280":
-            if sensors[sensor]["protocol"] == "i2c":
-                try:
-                    data = bme280.i2c_as_json(measurement, sensors[sensor]["address"],
-                                              sensor, comment=None)
-                    all_data.append(data[0])
-                except Exception:
-                    log.warning(f"Sensor {sensors[sensor]} did not return a measurement!")
-            else:
-                log.warning(f"Protocol for sensor {sensor} not implemented yet!")
-        else:  # sensor not implemented
-            log.warning(f"Sensor {sensor} is found in your config.edn "
-                            f"but the type {sensors[sensor]['type']} "
-                            "is not implemented (yet). "
-                            "No measurement was taken for this sensor!")
-    all_data_timestamp = [data | {"timestamp": timestamp} for data in all_data] # the pipe symbol is the merge operator (python 3.9+)
-    return all_data_timestamp
-
-
 def loop(seconds, sensors, measurement, config):
     """The main loop which is taking a measurement at a given interval.
 
@@ -206,13 +125,13 @@ def loop(seconds, sensors, measurement, config):
                  "\nPress Ctrl-C to exit.")
         while True:
             timestamp = time.time()
-            data = collect_measurements(sensors, measurement, timestamp)
+            data = handler.collect_measurements(sensors, measurement, timestamp, log=log)
             try:
                 send_to_db(data, config["influxdb"]["db"])
                 log.info(f"{datetime.now().strftime('%H:%M:%S')} Wrote to database.")
             except Exception:
                 log.warning("Could not send data to database! Is it online?")
-            time.sleep(seconds - (time.time() - timestamp)) # wait 'seconds' without time used to measure
+            time.sleep(seconds - (time.time() - timestamp))  # wait 'seconds' without time used to measure
     except KeyboardInterrupt:
         print("Program is exiting...")
     # except KeyError:
@@ -237,11 +156,11 @@ def main_with_prompt():
     parser.add_argument("--interval", "-i", type=int, help="Interval between measurements in seconds.")
     parser.add_argument("--verbose", "-v", action="count", default=0)
     args = parser.parse_args()
-    if args.measurement == None:
+    if args.measurement is None:
         args.measurement = input("Name of the measurement: ")
-    if args.interval == None:
+    if args.interval is None:
         args.interval = int(input("Wait seconds between measurements: "))
-    if args.config == None:
+    if args.config is None:
         config = read_config(find_config())
     else:
         args.config.close()  # We actually dont need the stream, just the name.

@@ -50,7 +50,8 @@ def convert_to_celsius(raw_data: str) -> float:
 
 
 def as_json(measurement: str, sensor_name: str = "DS18B20",
-            comment: str = None):
+            comment: str = None,
+            **kwargs):
     """Reads the temperature and returns it in the correct format for influxdb.
 
     Args:
