@@ -25,6 +25,7 @@ adafruit-circuitpython-dht = "^3.7.1"
 adafruit-circuitpython-bme280 = "^2.6"
 adafruit-circuitpython-bmp280 =  "^3.2"
 edn_format = "^0.7"
+sysv-ipc = "^1.1" # maybe needed for fixing DHT11 (at least one bug)
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

@@ -3,6 +3,8 @@ import board
 import digitalio
 import adafruit_bmp280
 
+SENSORS = {}  # dictionary of initiated sensors
+
 
 def read_bmp280_i2c(address=0x76):
     """Reads the BMP280 over I2C at selected address.
@@ -17,7 +19,21 @@ def read_bmp280_i2c(address=0x76):
     """
     i2c = board.I2C()
     sensor = adafruit_bmp280.Adafruit_BMP280_I2C(i2c, address=address)
-    return bmp280
+    return sensor
+
+
+def bmp280_initspi(pin: int):
+    """Initializes the sensor at given pin and adds to dict
+
+    Otherwise the filesystem will have too many open files and the program will crash.
+    Probably a bug in the adafruit library not properly closing the SPIDevice.
+    """
+    # get digital pin from board with integer
+    board_pin = board.__getattribute__(f"D{pin}")
+    spi = board.SPI()
+    cs = digitalio.DigitalInOut(board_pin)
+    sensor = adafruit_bmp280.Adafruit_BMP280_SPI(spi, cs)
+    SENSORS[pin] = sensor
 
 
 def read_bmp280_spi(pin: int):
@@ -30,15 +46,10 @@ def read_bmp280_spi(pin: int):
         bmp280: The sensor object containing the data as attributes.
 
     """
-    # get digital pin from board with integer
-    bmp280 = {}
-    board_pin = board.__getattribute__(f"D{pin}")
-    with board.SPI() as spi, digitalio.DigitalInOut(board_pin) as cs:
-        sensor = adafruit_bmp280.Adafruit_BMP280_SPI(spi, cs)
-        bmp280["temperature"] = float(sensor.temperature)
-        bmp280["pressure"] = float(sensor.pressure)
-    board_pin = None
-    return bmp280
+    if pin not in SENSORS:  # if not already initialized
+        bmp280_initspi(pin)
+    sensor = SENSORS[pin]
+    return sensor
 
 
 def i2c_as_json(measurement: str, address=0x76, sensor_name: str = "BMP280",
@@ -48,8 +59,8 @@ def i2c_as_json(measurement: str, address=0x76, sensor_name: str = "BMP280",
         json = [{"measurement": measurement,
                  "tags": {"sensor": sensor_name,
                           "comment": comment},
-                 "fields": {"temperature": sensor["temperature"],
-                            "pressure": sensor["pressure"]}
+                 "fields": {"temperature": sensor.temperature,
+                            "pressure": sensor.pressure}
                  }]
         return json
     except Exception:
@@ -63,8 +74,8 @@ def spi_as_json(measurement: str, pin, sensor_name: str = "BMP280",
         json = [{"measurement": measurement,
                  "tags": {"sensor": sensor_name,
                           "comment": comment},
-                 "fields": {"temperature": sensor["temperature"],
-                            "pressure": sensor["pressure"]}
+                 "fields": {"temperature": sensor.temperature,
+                            "pressure": sensor.pressure}
                  }]
         return json
     except Exception as e:

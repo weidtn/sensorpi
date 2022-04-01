@@ -1,6 +1,6 @@
 [[package]]
 name = "adafruit-blinka"
-version = "6.20.4"
+version = "7.2.0"
 description = "CircuitPython APIs for non-CircuitPython versions of Python such as CPython on Linux and MicroPython."
 category = "main"
 optional = false
@@ -55,14 +55,15 @@ reference = "piwheels"
 
 [[package]]
 name = "adafruit-circuitpython-busdevice"
-version = "5.1.5"
+version = "5.1.8"
 description = "CircuitPython bus device classes to manage bus sharing."
 category = "main"
 optional = false
-python-versions = "*"
+python-versions = ">=3.7.0"
 
 [package.dependencies]
-Adafruit-Blinka = "*"
+Adafruit-Blinka = ">=7.0.0"
+adafruit-circuitpython-typing = "*"
 
 [package.source]
 type = "legacy"
@@ -71,7 +72,7 @@ reference = "piwheels"
 
 [[package]]
 name = "adafruit-circuitpython-dht"
-version = "3.7.1"
+version = "3.7.2"
 description = "CircuitPython support for DHT11 and DHT22 type temperature/humidity devices"
 category = "main"
 optional = false
@@ -103,12 +104,28 @@ url = "https://www.piwheels.org/simple"
 reference = "piwheels"
 
 [[package]]
+name = "adafruit-circuitpython-typing"
+version = "1.3.1"
+description = "Types needed for type annotation that are not in `typing`"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+adafruit-circuitpython-busdevice = "*"
+
+[package.source]
+type = "legacy"
+url = "https://www.piwheels.org/simple"
+reference = "piwheels"
+
+[[package]]
 name = "adafruit-platformdetect"
-version = "3.19.5"
+version = "3.22.0"
 description = "Platform detection for use by libraries like Adafruit-Blinka."
 category = "main"
 optional = false
-python-versions = ">=3.6.0"
+python-versions = ">=3.7.0"
 
 [package.source]
 type = "legacy"
@@ -130,7 +147,7 @@ reference = "piwheels"
 
 [[package]]
 name = "astroid"
-version = "2.9.3"
+version = "2.11.2"
 description = "An abstract syntax tree for Python with inference support."
 category = "dev"
 optional = false
@@ -139,7 +156,7 @@ python-versions = ">=3.6.2"
 [package.dependencies]
 lazy-object-proxy = ">=1.4.0"
 typing-extensions = {version = ">=3.10", markers = "python_version < \"3.10\""}
-wrapt = ">=1.11,<1.14"
+wrapt = ">=1.11,<2"
 
 [package.source]
 type = "legacy"
@@ -235,6 +252,22 @@ url = "https://www.piwheels.org/simple"
 reference = "piwheels"
 
 [[package]]
+name = "dill"
+version = "0.3.4"
+description = "serialize all of python"
+category = "dev"
+optional = false
+python-versions = ">=2.7, !=3.0.*"
+
+[package.extras]
+graph = ["objgraph (>=1.7.2)"]
+
+[package.source]
+type = "legacy"
+url = "https://www.piwheels.org/simple"
+reference = "piwheels"
+
+[[package]]
 name = "edn-format"
 version = "0.7.5"
 description = "EDN format reader and writer in Python"
@@ -272,7 +305,7 @@ reference = "piwheels"
 
 [[package]]
 name = "influxdb-client"
-version = "1.25.0"
+version = "1.27.0"
 description = "InfluxDB 2.0 Python client library"
 category = "main"
 optional = false
@@ -285,7 +318,7 @@ python-dateutil = ">=2.5.3"
 pytz = ">=2019.1"
 rx = ">=3.0.1"
 six = ">=1.10"
-urllib3 = ">=1.15.1"
+urllib3 = ">=1.26.0"
 
 [package.extras]
 ciso = ["ciso8601 (>=2.1.1)"]
@@ -377,7 +410,7 @@ reference = "piwheels"
 
 [[package]]
 name = "numpy"
-version = "1.22.2"
+version = "1.22.3"
 description = "NumPy is the fundamental package for array computing with Python."
 category = "main"
 optional = false
@@ -488,7 +521,7 @@ reference = "piwheels"
 
 [[package]]
 name = "platformdirs"
-version = "2.5.0"
+version = "2.5.1"
 description = "A small Python module for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
 category = "dev"
 optional = false
@@ -592,11 +625,11 @@ reference = "piwheels"
 
 [[package]]
 name = "pyftdi"
-version = "0.53.3"
+version = "0.54.0"
 description = "FTDI device driver (pure Python)"
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 
 [package.dependencies]
 pyserial = ">=3.0"
@@ -609,20 +642,24 @@ reference = "piwheels"
 
 [[package]]
 name = "pylint"
-version = "2.12.2"
+version = "2.13.4"
 description = "python code static checker"
 category = "dev"
 optional = false
 python-versions = ">=3.6.2"
 
 [package.dependencies]
-astroid = ">=2.9.0,<2.10"
+astroid = ">=2.11.2,<=2.12.0-dev0"
 colorama = {version = "*", markers = "sys_platform == \"win32\""}
+dill = ">=0.2"
 isort = ">=4.2.5,<6"
-mccabe = ">=0.6,<0.7"
+mccabe = ">=0.6,<0.8"
 platformdirs = ">=2.2.0"
-toml = ">=0.9.2"
+tomli = {version = ">=1.1.0", markers = "python_version < \"3.11\""}
 typing-extensions = {version = ">=3.10.0", markers = "python_version < \"3.10\""}
+
+[package.extras]
+testutil = ["gitpython (>3)"]
 
 [package.source]
 type = "legacy"
@@ -782,7 +819,7 @@ reference = "piwheels"
 
 [[package]]
 name = "pytz"
-version = "2021.3"
+version = "2022.1"
 description = "World timezone definitions, modern and historical"
 category = "main"
 optional = false
@@ -808,7 +845,7 @@ reference = "piwheels"
 
 [[package]]
 name = "rope"
-version = "0.22.0"
+version = "0.23.0"
 description = "a python refactoring library..."
 category = "dev"
 optional = false
@@ -824,7 +861,7 @@ reference = "piwheels"
 
 [[package]]
 name = "rpi-ws281x"
-version = "4.3.2"
+version = "4.3.3"
 description = "Userspace Raspberry Pi PWM/PCM/SPI library for SK6812 and WS281X LEDs."
 category = "main"
 optional = false
@@ -914,6 +951,19 @@ url = "https://www.piwheels.org/simple"
 reference = "piwheels"
 
 [[package]]
+name = "tomli"
+version = "2.0.1"
+description = "A lil' TOML parser"
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+
+[package.source]
+type = "legacy"
+url = "https://www.piwheels.org/simple"
+reference = "piwheels"
+
+[[package]]
 name = "typing-extensions"
 version = "4.1.1"
 description = "Backported and Experimental Type Hints for Python 3.6+"
@@ -941,7 +991,7 @@ reference = "piwheels"
 
 [[package]]
 name = "urllib3"
-version = "1.26.8"
+version = "1.26.9"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
 category = "main"
 optional = false
@@ -950,7 +1000,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, <4"
 [package.extras]
 secure = ["pyOpenSSL (>=0.14)", "cryptography (>=1.3.4)", "idna (>=2.0.0)", "certifi", "ipaddress"]
 socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
-brotli = ["brotlipy (>=0.6.0)"]
+brotli = ["brotli (>=1.0.9)", "brotlicffi (>=0.8.0)", "brotlipy (>=0.6.0)"]
 
 [package.source]
 type = "legacy"
@@ -972,7 +1022,7 @@ reference = "piwheels"
 
 [[package]]
 name = "wrapt"
-version = "1.13.3"
+version = "1.14.0"
 description = "Module for decorators, wrappers and monkey patching."
 category = "dev"
 optional = false
@@ -999,11 +1049,11 @@ reference = "piwheels"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "00df8b1d73679479aa05c2218a6005f17506554adb1678d650955403819173a6"
+content-hash = "77abf20c6043540e17b0955d6fd928635a5d7003b87442d6610572f7de43d7a5"
 
 [metadata.files]
 adafruit-blinka = [
-    {file = "Adafruit_Blinka-6.20.4-py3-none-any.whl", hash = "sha256:678721892239cc8178f840ce5b6b8edc0ed1262516920c7432d95234aad9203b"},
+    {file = "Adafruit_Blinka-7.2.0-py3-none-any.whl", hash = "sha256:cfad5735c24b1dee23b606bd6345ca094928cbceca26a4f5ccae14ddb83b7719"},
 ]
 adafruit-circuitpython-bme280 = [
     {file = "adafruit_circuitpython_bme280-2.6.10-py3-none-any.whl", hash = "sha256:889b037c98078d65d5e133b146d3431f679fbd0b3dc203aaf3992a74eacfa1c4"},
@@ -1012,22 +1062,25 @@ adafruit-circuitpython-bmp280 = [
     {file = "adafruit_circuitpython_bmp280-3.2.11-py3-none-any.whl", hash = "sha256:fea608f4f8c1f6453fbac0ee3791d652b1213a159461b03b56aa0fcf8d8290f6"},
 ]
 adafruit-circuitpython-busdevice = [
-    {file = "adafruit_circuitpython_busdevice-5.1.5-py3-none-any.whl", hash = "sha256:bda1d427d4c93b686e0ab816460067f9d34c54463d74b7131a081e53194bec25"},
+    {file = "adafruit_circuitpython_busdevice-5.1.8-py3-none-any.whl", hash = "sha256:66f9174412c3ad537f8058e12363524c6e4277677cde103ce94cf0ea6df72951"},
 ]
 adafruit-circuitpython-dht = [
-    {file = "adafruit_circuitpython_dht-3.7.1-py3-none-any.whl", hash = "sha256:40125fece175f016b3c2a52fa24c9b658cb1f70c5d5aae5883d0f0c3a90c9f28"},
+    {file = "adafruit_circuitpython_dht-3.7.2-py3-none-any.whl", hash = "sha256:3a846715ff41ff9e04c2019b44916401602dea656cd5c5b5483f5b6ee0d673a2"},
 ]
 adafruit-circuitpython-tsl2591 = [
     {file = "adafruit_circuitpython_tsl2591-1.3.2-py3-none-any.whl", hash = "sha256:26666040d41dd4723a81b71c090a3468003f6b0e59a14c40bf51d387d00fe5f0"},
 ]
+adafruit-circuitpython-typing = [
+    {file = "adafruit_circuitpython_typing-1.3.1-py3-none-any.whl", hash = "sha256:2152527d64b5dc2dde08cb487f09449b97378cb80a0b181360bd436d83e0a89b"},
+]
 adafruit-platformdetect = [
-    {file = "Adafruit_PlatformDetect-3.19.5-py3-none-any.whl", hash = "sha256:c8c380a4180b073f6abe32968e48857e7b2ae7d109b3ebfd81b0ee5c6c857a09"},
+    {file = "Adafruit_PlatformDetect-3.22.0-py3-none-any.whl", hash = "sha256:5125d91448dd4ae9e00a617fb15a8c42f5827cc78e8dae2f7ec4e4e96df3be09"},
 ]
 adafruit-pureio = [
     {file = "Adafruit_PureIO-1.1.9-py3-none-any.whl", hash = "sha256:17473ffd6f00af6d4be37579baabc396cfceb682b305272e457f078241b6fd0e"},
 ]
 astroid = [
-    {file = "astroid-2.9.3-py3-none-any.whl", hash = "sha256:f094565baf85c40d6b47290e644815ee2bdbe337612b6ffc39e016ae960fe7e5"},
+    {file = "astroid-2.11.2-py3-none-any.whl", hash = "sha256:806911ec92882c590bec4e25ac0db01d23d980585941ab1f188d027956a5d0af"},
 ]
 atomicwrites = [
     {file = "atomicwrites-1.4.0-py2.py3-none-any.whl", hash = "sha256:6d1784dea7c0c8d4a5172b6c620f40b6e4cbfdf96d783691f2e1302a7b88e197"},
@@ -1052,6 +1105,9 @@ ciso8601 = [
 colorama = [
     {file = "colorama-0.4.4-py2.py3-none-any.whl", hash = "sha256:9f47eda37229f68eee03b24b9748937c7dc3868f906e8ba69fbcbdd3bc5dc3e2"},
 ]
+dill = [
+    {file = "dill-0.3.4-py2.py3-none-any.whl", hash = "sha256:7e40e4a70304fd9ceab3535d36e58791d9c4a776b38ec7f7ec9afc8d3dca4d4f"},
+]
 edn-format = [
     {file = "edn_format-0.7.5-py3-none-any.whl", hash = "sha256:3752c6bd50d39c60f767da9fde7619133a8b3f9217dcdcbd52b9e2e1b7bbb045"},
 ]
@@ -1059,7 +1115,7 @@ flake8 = [
     {file = "flake8-4.0.1-py2.py3-none-any.whl", hash = "sha256:f1d1114153fb100a4819a94f19b7325be9705e7d3cb90ab921b6d63b343e9612"},
 ]
 influxdb-client = [
-    {file = "influxdb_client-1.25.0-py3-none-any.whl", hash = "sha256:30a41116b3083604204aaaf3a6dad55bdf8ff2bfc945e612d578cc3aa71fb99b"},
+    {file = "influxdb_client-1.27.0-py3-none-any.whl", hash = "sha256:cf581c4d537f8dde7254f3fa214b902eb767b74fa2c66b7e1319c84f112168cd"},
 ]
 isort = [
     {file = "isort-5.10.1-py3-none-any.whl", hash = "sha256:eea14d9ea804d971049b4a1f35d1fde5a1988a3d6adc52a01f84f6ed4afca079"},
@@ -1080,8 +1136,8 @@ more-itertools = [
     {file = "more_itertools-8.12.0-py3-none-any.whl", hash = "sha256:b43ba69c9ce84ac81c87698802232c8491ec050a8430b8ce57a654ab05f94be4"},
 ]
 numpy = [
-    {file = "numpy-1.22.2-cp39-cp39-linux_armv6l.whl", hash = "sha256:c90ed70414781886980df6c110bdaa7d5d7c9e30a2b5370c1cef7d656fb15511"},
-    {file = "numpy-1.22.2-cp39-cp39-linux_armv7l.whl", hash = "sha256:c90ed70414781886980df6c110bdaa7d5d7c9e30a2b5370c1cef7d656fb15511"},
+    {file = "numpy-1.22.3-cp39-cp39-linux_armv6l.whl", hash = "sha256:82df998306893fcabebce6f0a86a87b10b0486de08dde77423ef81b37da0b3ba"},
+    {file = "numpy-1.22.3-cp39-cp39-linux_armv7l.whl", hash = "sha256:82df998306893fcabebce6f0a86a87b10b0486de08dde77423ef81b37da0b3ba"},
 ]
 opencv-python-headless = [
     {file = "opencv_python_headless-4.5.5.62-cp37-cp37m-linux_armv6l.whl", hash = "sha256:122d1e1e7e293eba68e33cde8ffeaef45b4a044021cdd2c73d8b508e57b89cf1"},
@@ -1103,7 +1159,7 @@ picamera = [
     {file = "picamera-1.13-py3-none-any.whl", hash = "sha256:122e792bb944973cdf2e810a8cbfc405d5c154083943ef75a5cc9f57ee4058f5"},
 ]
 platformdirs = [
-    {file = "platformdirs-2.5.0-py3-none-any.whl", hash = "sha256:2d6a44127fae9d541dd2f14cd87a9bebbb603c82c6407310e2e4212ca9b226e9"},
+    {file = "platformdirs-2.5.1-py3-none-any.whl", hash = "sha256:1cbcd0d3febfbf69fceaedaa02bf485f6ed773573cf90423e6df11a694f44e1e"},
 ]
 pluggy = [
     {file = "pluggy-0.13.1-py2.py3-none-any.whl", hash = "sha256:966c145cd83c96502c3c3868f50408687b38434af77734af1e9ca461a4081d2d"},
@@ -1124,10 +1180,10 @@ pyflakes = [
     {file = "pyflakes-2.4.0-py2.py3-none-any.whl", hash = "sha256:3cec49c0bdd514925b3b99d111a566ad7e265ddb89b9fd5e2703983cdc0419eb"},
 ]
 pyftdi = [
-    {file = "pyftdi-0.53.3-py3-none-any.whl", hash = "sha256:600971d906f89d42f5eb7a3fc0cac71f18654cd374eee6db2e811382128d9a59"},
+    {file = "pyftdi-0.54.0-py3-none-any.whl", hash = "sha256:f5060dd8df3cbf30c47237ad89db61680c70385aff52c00bc90826107430f330"},
 ]
 pylint = [
-    {file = "pylint-2.12.2-py3-none-any.whl", hash = "sha256:faf80aea248f25c7b872965f13d77c8bd1ef8db27cb408bf77bfe4dfd27248c0"},
+    {file = "pylint-2.13.4-py3-none-any.whl", hash = "sha256:a92acd0d28f7f546cb6401d0653dbfe5e1ed9980458d11c44c4381dc8e65a0d9"},
 ]
 pyparsing = [
     {file = "pyparsing-3.0.7-py3-none-any.whl", hash = "sha256:9cac03df81a32c5a08393d4aaed42318304684e9abc1336deff3a84feb2e1260"},
@@ -1151,21 +1207,21 @@ python-lsp-server = [
     {file = "python_lsp_server-1.3.3-py3-none-any.whl", hash = "sha256:2067092ea6898ab272cdaab43e5d1f3a42482b9447a4eee7b570591af1f85a42"},
 ]
 pytz = [
-    {file = "pytz-2021.3-py3-none-any.whl", hash = "sha256:3f0820049ea2e942b7852a85801bc97e29913d278baa5c984e1a4a2075d173d2"},
+    {file = "pytz-2022.1-py3-none-any.whl", hash = "sha256:d7c0502dc1bc5e1a1a447a7527f99ddf7a302c0f83367ed442b6b3c38c38286d"},
 ]
 pyusb = [
     {file = "pyusb-1.2.1-py3-none-any.whl", hash = "sha256:2b4c7cb86dbadf044dfb9d3a4ff69fd217013dbe78a792177a3feb172449ea36"},
 ]
 rope = [
-    {file = "rope-0.22.0-py3-none-any.whl", hash = "sha256:752d57e873371813aaec54152eabb0d290ae539b44a8eb3747f33e7dbe31dc2d"},
+    {file = "rope-0.23.0-py3-none-any.whl", hash = "sha256:94ae2d29c83b38a5538c44123486d6a891ee695aa4bfc3fc2f62165db03e9826"},
 ]
 rpi-ws281x = [
-    {file = "rpi_ws281x-4.3.2-cp35-cp35m-linux_armv6l.whl", hash = "sha256:7cc848c9579031c7fb99cb1f48157bbd3151fd31d2896e0183fa07645fcb1a86"},
-    {file = "rpi_ws281x-4.3.2-cp35-cp35m-linux_armv7l.whl", hash = "sha256:7cc848c9579031c7fb99cb1f48157bbd3151fd31d2896e0183fa07645fcb1a86"},
-    {file = "rpi_ws281x-4.3.2-cp37-cp37m-linux_armv6l.whl", hash = "sha256:2608bf811e4b0f178047eccd2975a517a8cde4b69f2fd9aeee209825efe2a235"},
-    {file = "rpi_ws281x-4.3.2-cp37-cp37m-linux_armv7l.whl", hash = "sha256:2608bf811e4b0f178047eccd2975a517a8cde4b69f2fd9aeee209825efe2a235"},
-    {file = "rpi_ws281x-4.3.2-cp39-cp39-linux_armv6l.whl", hash = "sha256:da04ba1a4a4ec8daaecea12ee126b4398293f63f056677cde0a1a28d9383848a"},
-    {file = "rpi_ws281x-4.3.2-cp39-cp39-linux_armv7l.whl", hash = "sha256:da04ba1a4a4ec8daaecea12ee126b4398293f63f056677cde0a1a28d9383848a"},
+    {file = "rpi_ws281x-4.3.3-cp35-cp35m-linux_armv6l.whl", hash = "sha256:18176f540fbeaa4abd0f70b84c3858fe21b9c5b5c4e2b194a7c4befcc05852ab"},
+    {file = "rpi_ws281x-4.3.3-cp35-cp35m-linux_armv7l.whl", hash = "sha256:18176f540fbeaa4abd0f70b84c3858fe21b9c5b5c4e2b194a7c4befcc05852ab"},
+    {file = "rpi_ws281x-4.3.3-cp37-cp37m-linux_armv6l.whl", hash = "sha256:8193709fca4341512c869a53b4a446c1ce7171db11c4b5de92b0f20f58c4dc83"},
+    {file = "rpi_ws281x-4.3.3-cp37-cp37m-linux_armv7l.whl", hash = "sha256:8193709fca4341512c869a53b4a446c1ce7171db11c4b5de92b0f20f58c4dc83"},
+    {file = "rpi_ws281x-4.3.3-cp39-cp39-linux_armv6l.whl", hash = "sha256:727f514a87662c5f50f51cf2c05c1546fa4c95c400c528d5bc9a862b1fb745bd"},
+    {file = "rpi_ws281x-4.3.3-cp39-cp39-linux_armv7l.whl", hash = "sha256:727f514a87662c5f50f51cf2c05c1546fa4c95c400c528d5bc9a862b1fb745bd"},
 ]
 "rpi.gpio" = [
     {file = "RPi.GPIO-0.7.1-cp35-cp35m-linux_armv6l.whl", hash = "sha256:5073d1972727cfad38a1a42f02da91dc41f137679290aa804ab6c410168347ac"},
@@ -1193,6 +1249,9 @@ sysv-ipc = [
 toml = [
     {file = "toml-0.10.2-py2.py3-none-any.whl", hash = "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b"},
 ]
+tomli = [
+    {file = "tomli-2.0.1-py3-none-any.whl", hash = "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc"},
+]
 typing-extensions = [
     {file = "typing_extensions-4.1.1-py3-none-any.whl", hash = "sha256:31b902ea3c3297255b2ce9b5d9335e6555068dd767d3c514f263c43d9411fcab"},
 ]
@@ -1203,18 +1262,18 @@ ujson = [
     {file = "ujson-5.1.0-cp39-cp39-linux_armv7l.whl", hash = "sha256:c168f4d332199f42245b8105b8cada683fd21c9cab9fecd3fdab031ebf84a273"},
 ]
 urllib3 = [
-    {file = "urllib3-1.26.8-py2.py3-none-any.whl", hash = "sha256:efbdd6e3ba8c0a5ff0eb83ce85a4e38a5a9101c61ff2b1f5e2c0190a6e1de1a1"},
+    {file = "urllib3-1.26.9-py2.py3-none-any.whl", hash = "sha256:8d20a39e9b43639fe667928235fc341f7873ab563be57c7666e7174bf26224f6"},
 ]
 wcwidth = [
     {file = "wcwidth-0.2.5-py2.py3-none-any.whl", hash = "sha256:beb4802a9cebb9144e99086eff703a642a13d6a0052920003a230f3294bbe784"},
 ]
 wrapt = [
-    {file = "wrapt-1.13.3-cp35-cp35m-linux_armv6l.whl", hash = "sha256:a32f76ef391a3fc7f6f8de779ad9607c2769fb96693bcdc2c79449bc1a97cb28"},
-    {file = "wrapt-1.13.3-cp35-cp35m-linux_armv7l.whl", hash = "sha256:a32f76ef391a3fc7f6f8de779ad9607c2769fb96693bcdc2c79449bc1a97cb28"},
-    {file = "wrapt-1.13.3-cp37-cp37m-linux_armv6l.whl", hash = "sha256:0f1c728f7faa4909baf802060647c91582b3061d3aa9725277d47e206eed4362"},
-    {file = "wrapt-1.13.3-cp37-cp37m-linux_armv7l.whl", hash = "sha256:0f1c728f7faa4909baf802060647c91582b3061d3aa9725277d47e206eed4362"},
-    {file = "wrapt-1.13.3-cp39-cp39-linux_armv6l.whl", hash = "sha256:a92b3569a9ef00a853e51f5ca424d800fbe0393bd248036c68f7b23e69b498ef"},
-    {file = "wrapt-1.13.3-cp39-cp39-linux_armv7l.whl", hash = "sha256:a92b3569a9ef00a853e51f5ca424d800fbe0393bd248036c68f7b23e69b498ef"},
+    {file = "wrapt-1.14.0-cp35-cp35m-linux_armv6l.whl", hash = "sha256:7e8d7bee5e746db0170c35dec0c716fe4e36e71d5b82b2313c3d7130cabaa140"},
+    {file = "wrapt-1.14.0-cp35-cp35m-linux_armv7l.whl", hash = "sha256:7e8d7bee5e746db0170c35dec0c716fe4e36e71d5b82b2313c3d7130cabaa140"},
+    {file = "wrapt-1.14.0-cp37-cp37m-linux_armv6l.whl", hash = "sha256:c1235db51d8a5d7fa3fcbee916c52da2507bc7f85485bf0fa7db68ebe14eb333"},
+    {file = "wrapt-1.14.0-cp37-cp37m-linux_armv7l.whl", hash = "sha256:c1235db51d8a5d7fa3fcbee916c52da2507bc7f85485bf0fa7db68ebe14eb333"},
+    {file = "wrapt-1.14.0-cp39-cp39-linux_armv6l.whl", hash = "sha256:9d2886c22f4649f59d222e1958613a18dcc4e5b4cf8d783e0195eefbac365dd4"},
+    {file = "wrapt-1.14.0-cp39-cp39-linux_armv7l.whl", hash = "sha256:9d2886c22f4649f59d222e1958613a18dcc4e5b4cf8d783e0195eefbac365dd4"},
 ]
 yapf = [
     {file = "yapf-0.32.0-py2.py3-none-any.whl", hash = "sha256:5efc4e0ebda54729c1afd5bfed6705700f65d1aaba365a38ea1385283cc48b7a"},
