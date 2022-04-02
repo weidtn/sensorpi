@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
 from . import ds18b20, tsl2591, dht11, camera, bmp280, bme280
+import logging
 
+
+log = logging.getLogger(__name__)
+log.setLevel(logging.INFO)
+hdlr = logging.StreamHandler()
+log.addHandler(hdlr)
 
 # This is a dictionary containing the function for each sensor
 sensor_funcs = {
@@ -17,7 +23,7 @@ sensor_funcs = {
 }
 
 
-def collect_measurements(sensors, measurement, timestamp, log):
+def collect_measurements(sensors, measurement, timestamp):
     """
     takes a list of sensors with pins and runs measurements,
     then constructs a json wich is returned

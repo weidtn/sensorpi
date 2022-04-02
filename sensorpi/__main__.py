@@ -54,7 +54,8 @@ def find_config() -> str:
     try:
         config_path = config_paths[0]
         return config_path
-    except Exception:
+    except Exception as e:
+        log.error(e)
         log.error("No config file found. Please create a new config.edn file!")
 
 
@@ -105,7 +106,7 @@ def create_db(db, influx_host="localhost", influx_port=8086):
         else:
             print(f"Database {db} already exists!")
     except Exception:
-        print("Error while creating database!")
+        log.error("Error while creating database!")
 
 
 def loop(seconds, sensors, measurement, config):
@@ -125,22 +126,24 @@ def loop(seconds, sensors, measurement, config):
                  "\nPress Ctrl-C to exit.")
         while True:
             timestamp = time.time()
-            data = handler.collect_measurements(sensors, measurement, timestamp, log=log)
+            data = handler.collect_measurements(sensors, measurement, timestamp)
             try:
                 send_to_db(data, config["influxdb"]["db"])
                 log.info(f"{datetime.now().strftime('%H:%M:%S')} Wrote to database.")
-            except Exception:
+            except Exception as e:
+                log.warning(e)
                 log.warning("Could not send data to database! Is it online?")
             time.sleep(seconds - (time.time() - timestamp))  # wait 'seconds' without time used to measure
     except KeyboardInterrupt:
-        print("Program is exiting...")
-    # except KeyError:
-        # print("Your config has some error, try to fix it!")
+        log.warning("Program is exiting...")
+    except KeyError as e:
+        log.error(e)
+        log.error("Your config has some error, try to fix it!")
 
 
 def main(seconds, measurement, config, verbose):
     """Main function which reads the config file and then starts a loop.
-    TODO: Second loop around that one that saves a picture
+
     """
     try:
         sensors = config["sensors"]
