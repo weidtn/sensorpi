@@ -59,6 +59,28 @@ def find_config() -> str:
         log.error("No config file found. Please create a new config.edn file!")
 
 
+def create_config(path):
+    """Creates a new config file at the given path
+
+    Args:
+        path: string of a path
+    """
+    content = """{:influxdb {:url \"http://localhost:8086\"
+                          :db \"test\"}
+                :sensors{
+                   :ds18b20_1 ;; name of the sensor
+                   {:type \"ds18b20\"}
+                   :dht11_inside
+                   {:type \"dht11\"
+                    :pin 26}}} ;; Pin of the sensor """
+    try:
+        with open(path, "w") as f:
+            f.write(content)
+    except Exception as e:
+        print(e)
+        log.error(f"Could not create config file at {path}!")
+
+
 def read_config(config_path: str) -> dict:
     """Reads the given config file and parses it.
 
@@ -153,12 +175,23 @@ def main(seconds, measurement, config, verbose):
 
 
 def main_with_prompt():
-    parser = argparse.ArgumentParser(description="Run measurements from different sensors and send data to an influx db.")
-    parser.add_argument("--config", "-c", type=argparse.FileType("r"), help="config.edn file to use.")
-    parser.add_argument("--measurement", "-m", type=str, help="Measurement name.")
-    parser.add_argument("--interval", "-i", type=int, help="Interval between measurements in seconds.")
+    parser = argparse.ArgumentParser(
+        description="Run measurements from different sensors and send data to an influx db.")
+    parser.add_argument("--config", "-c", type=argparse.FileType("r"),
+                        help="config.edn file to use.")
+    parser.add_argument("--measurement", "-m", type=str,
+                        help="Measurement name.")
+    parser.add_argument("--newconfig", "-n", type=str,
+                        help="Creates a new config at the given path.")
+    parser.add_argument("--interval", "-i", type=int,
+                        help="Interval between measurements in seconds.")
     parser.add_argument("--verbose", "-v", action="count", default=0)
     args = parser.parse_args()
+    if args.newconfig is not None:
+        create_config(args.newconfig)
+        log.info(f"Config created at {args.newconfig}."
+                 f"Edit it and restart the program with it!")
+        exit()
     if args.measurement is None:
         args.measurement = input("Name of the measurement: ")
     if args.interval is None:
