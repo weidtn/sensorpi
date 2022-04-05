@@ -1,30 +1,34 @@
 * Introduction
 A program to read different sensor's data connected to for example a raspberry pi and send it to an influxdb. InfluxDB has to be already installed with a database. Install this on your own.
 
-** InfluxDB
-Sensorpi uses influxdb at version 1.8. Version 2.0 needs 64bit support, which is Raspberry Pi OS is not available in. (One way to easily install both grafana and influx is using the =install.sh= script found at https://github.com/Siytek/grafana-influx).
+* Installation
+
+Sensorpi uses influxdb at version 1.8. Version 2.0 needs 64bit support, which Raspberry Pi OS is not available in. (One way to easily install both grafana and influx is using the =install.sh= script found at https://github.com/Siytek/grafana-influx).
 
 To use less CPU on your Raspberry the following is recommended:
-
 Change settings in =/etc/influxdb/influxdb.conf=
 #+begin_src
 index-version = "tsi1"
 store-enabled = false
 #+end_src
 
-* Installation
-It might be needed to install the dependencies for =opencv-python-headless= first:
+It might be needed to install the dependencies for =opencv-python-headless=:
+#+begin_src shell :eval no
+sudo apt install libatlas-base-dev
+#+end_src
+=libatlas-base-dev= alone should install everything needed.
 
-#+begin_src shell eval no
+But if errors (probably containing something like "libblas") still appear, please also try installing all these packages:
+#+begin_src  shell :eval no
 sudo apt install libaom0 libatlas3-base libavcodec58 libavformat58 libavutil56 libbluray2 libcairo2 libchromaprint1 libcodec2-0.8.1 libcroco3 libdatrie1 libdrm2 libfontconfig1 libgdk-pixbuf2.0-0 libgfortran5 libgme0 libgraphite2-3 libgsm1 libharfbuzz0b libjbig0 libmp3lame0 libmpg123-0 libogg0 libopenjp2-7 libopenmpt0 libopus0 libpango-1.0-0 libpangocairo-1.0-0 libpangoft2-1.0-0 libpixman-1-0 librsvg2-2 libshine3 libsnappy1v5 libsoxr0 libspeex1 libssh-gcrypt-4 libswresample3 libswscale5 libthai0 libtheora0 libtiff5 libtwolame0 libva-drm2 libva-x11-2 libva2 libvdpau1 libvorbis0a libvorbisenc2 libvorbisfile3 libvpx5 libwavpack1 libwebp6 libwebpmux3 libx264-155 libx265-165 libxcb-render0 libxcb-shm0 libxfixes3 libxrender1 libxvidcore4 libzvbi0
 #+end_src
 
-Install via pip:
+Then install this package via pip:
 #+begin_src shell
 pip install sensorpi
 #+end_src
 
-You can download the repo from github by running
+Or download the repo from github by running
 #+begin_src shell :eval no
 git clone https://github.com/weidtn/sensorpi.git
 #+end_src
@@ -35,7 +39,12 @@ poetry install
 #+end_src
 
 * Configuration
-All configuration is done in the config.edn file.
+All configuration is done in the =config.edn= file.
+You can make the program create a new config by using
+#+begin_src shell :eval no
+sensorpi -n "/path/to/newconfig.edn"
+#+end_src
+
 If you add a sensor here, it will automatically be read by the program and added to the measurement.
 InfluxDB data also has to be set up in here it defaults to a local installation on the same raspberry pi without any authentication. To use a remote InfluxDB, change the URL in the config file.
 
@@ -74,8 +83,14 @@ You have to provide the keywords =:influxdb= and =:sensors= with your data. An e
 Make sure to have an InfluxDB v1.8 running and all the sensors connected. Then write a config.edn file with the needed data.
 
 This will use the config file in the measurement1 folder and save to db as measurement1 every 30 seconds. Measurement and interval are optional and the program will automatically ask for them in the commandline. If no config is given, it will search for a config.edn file in sensorpi's folder.
+This will run the program if installed in your path via pip:
 #+begin_src shell :eval no
 sensorpi -m measurement1 -i 30 -c ./measurement1/config.edn
+#+end_src
+
+If cloned from GitHub you can run:
+#+begin_src shell :eval no
+poetry run sensorpi -m measurement1 -i 30 -c ./measurement1/config.edn
 #+end_src
 
 * Supported sensors
@@ -146,3 +161,7 @@ The DS18B20 sensor has no further options:
 :sensors {:DS18B20
            {:type "ds18b20"}}
 #+end_src
+
+
+* Adding your own sensor
+If you want to implement your own sensor type, you can have a look at the code for each sensor and copy the style for your own sensor. Try to use the same argument names and structure of returned data. Then add your sensor module and function in the =/sensors/handler.py=. This should be enough for the program to recognize your sensor if you add it to the =config.edn= file.
