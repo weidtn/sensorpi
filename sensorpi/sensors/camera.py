@@ -4,6 +4,7 @@ import time
 import picamera
 import cv2
 import numpy as np
+import time
 from typing import Union
 
 
@@ -24,7 +25,8 @@ def capture(rotate: bool = True, **kwargs) -> np.ndarray:
     # Create the in-memory stream
     stream = io.BytesIO()
     with picamera.PiCamera() as camera:
-        camera.start_preview()
+        # TODO Dont show image on screen, test
+        # camera.start_preview()
         time.sleep(2)
         camera.capture(stream, format='jpeg')
     # Construct a numpy array from the stream
@@ -36,7 +38,7 @@ def capture(rotate: bool = True, **kwargs) -> np.ndarray:
     return image
 
 
-def save_img(image: np.ndarray, path: str, **kwargs):
+def save_img(image: np.ndarray, path: str, timestamp=False, **kwargs):
     """Saves the image to the path on the filesystem.
 
     Args:
@@ -47,7 +49,16 @@ def save_img(image: np.ndarray, path: str, **kwargs):
         save_img("./image.png", image)
 
     """
-    cv2.imwrite(path, image)
+    # TODO Add timestamp, test
+    if timestamp:
+        filename = path.split("/")[-1]  # only the filename
+        pth = path.split(filename)[0]  # rest of the path, without filename
+        ending = filename.split(".")[-1]  # fileformat (like .png or .jpg)
+        f = filename.split(".")[0] # filename without format ending
+        t = time.strftime("%d_%m_%Y_%H_%M_%S")
+        cv2.imwrite(f"{pth}{f}_{t}.{ending}", image)
+    else:
+        cv2.imwrite(path, image)
 
 
 def calc_histogram(img: np.ndarray) -> np.ndarray:
