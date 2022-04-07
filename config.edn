@@ -6,8 +6,7 @@
            {:type "camera" ;; type of the sensor. check supported types
             :save {:path "/usr/share/grafana/public/img/test.png" ;; Where you want the image to be saved. This example makes it visible for grafana!
                    :timestamp false} ;; will automatically insert timestamp in image.
-            :rotate true
-            :hist true}
+            :rotate true}
            :ds18b20_1
            {:type "ds18b20"}
            :dht11_inside

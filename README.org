@@ -57,7 +57,9 @@ You have to provide the keywords =:influxdb= and =:sensors= with your data. An e
 
  :sensors {:cam  ;; name of the sensor
            {:type "camera" ;; type of the sensor. check supported types
-            :rotate true} ;; some further possible options depending on sensor
+            :save {:path "/usr/share/grafana/public/img/test.png" ;; Where you want the image to be saved. This path makes it accessible for grafana!
+                   :timestamp false} ;; will automatically insert timestamp in image.
+            :rotate true}
            :ds18b20_1
            {:type "ds18b20"}
            :dht11_inside
@@ -115,10 +117,9 @@ The folder where the image should be saved to needs to exist already.
 :sensors {:cam
           {:type "camera"
            :rotate true
-           :hist true                                ;; can also be false if you only need the image
            :save                                     ;; if the :save keyword does not exist, only a histogram is calculated
             {:path "/home/pi/measurement1/cam.png"   ;; saves image to the folder
-             :timestamp true}}}                      ;; Adds a timestamp to the image before ".png"
+             :timestamp true}}}                      ;; Adds a timestamp to the image name before ".png"
 #+end_src
 
 A nice trick is to save the image to =/usr/share/grafana/public/img/= so you can access it from a grafana text panel and little html/js (or maybe just symlink it): https://gist.github.com/weidtn/d1171a896483899b606ec9663925147f

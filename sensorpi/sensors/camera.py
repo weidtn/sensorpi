@@ -25,8 +25,6 @@ def capture(rotate: bool = True, **kwargs) -> np.ndarray:
     # Create the in-memory stream
     stream = io.BytesIO()
     with picamera.PiCamera() as camera:
-        # TODO Dont show image on screen, test
-        # camera.start_preview()
         time.sleep(2)
         camera.capture(stream, format='jpeg')
     # Construct a numpy array from the stream
@@ -49,7 +47,6 @@ def save_img(image: np.ndarray, path: str, timestamp=False, **kwargs):
         save_img("./image.png", image)
 
     """
-    # TODO Add timestamp, test
     if timestamp:
         filename = path.split("/")[-1]  # only the filename
         pth = path.split(filename)[0]  # rest of the path, without filename
